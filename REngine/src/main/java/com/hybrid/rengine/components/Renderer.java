@@ -63,6 +63,6 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
     }
 
     private void loadSprite() {
-        sprite = LoadSave.GetSpriteAtlas(spriteFileName);
+        sprite = LoadSave.GetSprite(spriteFileName);
     }
 }

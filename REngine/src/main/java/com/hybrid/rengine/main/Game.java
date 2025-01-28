@@ -1,6 +1,8 @@
 package com.hybrid.rEngine.main;
 
 import com.hybrid.rEngine.components.*;
+import com.hybrid.rEngine.math.Vector2;
+import com.hybrid.rEngine.math.Vector2Int;
 import com.hybrid.tankGame.Player;
 import java.awt.Graphics;
 import java.util.HashSet;
@@ -44,6 +46,13 @@ public class Game implements Runnable {
     private void start() {
         //levelManager = new LevelManager(this);
         player = new Player();
+        Transform transform = player.getComponent(Transform.class);
+        transform.setPosition(new Vector2(100,100));
+        player.addComponent(transform);
+        
+        Renderer renderer = new Renderer(transform, "tank_green.png", new Vector2Int(0,0), new Vector2Int(64,64));
+        player.addComponent(renderer);
+        
         updatables.addAll(player.getUpdatables());
         renderUpdatables.addAll(player.getRenderUpdatables());
     }

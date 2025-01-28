@@ -28,7 +28,7 @@ public class Animator extends Component implements Updatable, RenderUpdatable {
         this.atlasFileName = atlasFileName;
         this.subImageSize = renderer.getSize();
 
-        BufferedImage img = LoadSave.GetSpriteAtlas(this.atlasFileName);
+        BufferedImage img = LoadSave.GetSprite(this.atlasFileName);
 
         animation = new BufferedImage[subImageCount];
         for (int i = 0; i < animation.length; i++) {
