@@ -23,8 +23,7 @@ public class GameWindow {
         jframe.setVisible(true);
 
         if (fullScreenMode) {
-            GraphicsEnvironment graphics
-                    = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice device = graphics.getDefaultScreenDevice();
             device.setFullScreenWindow(jframe);
         }

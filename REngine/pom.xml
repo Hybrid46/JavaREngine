@@ -8,6 +8,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>22</maven.compiler.release>
-        <exec.mainClass>com.hybrid.rengine.REngine</exec.mainClass>
+        <exec.mainClass>com.hybrid.rEngine.main.MainClass</exec.mainClass>
     </properties>
 </project>
