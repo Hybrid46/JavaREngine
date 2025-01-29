@@ -5,6 +5,7 @@ import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.math.Vector2Int;
 import com.hybrid.tankGame.Player;
 import java.awt.Graphics;
+import java.util.Collection;
 import java.util.HashSet;
 
 public class Game implements Runnable {
@@ -48,17 +49,7 @@ public class Game implements Runnable {
 
     private void start() {
         //levelManager = new LevelManager(this);
-        player = new Player();
-        Transform transform = player.getComponent(Transform.class);
-        transform.setPosition(new Vector2(100,100));
-        player.addComponent(transform);
-        
-        Renderer renderer = new Renderer(transform, "tank_green.png", new Vector2Int(0,0), new Vector2Int(64,64));
-        player.addComponent(renderer);
-        
-        updatables.add(player);
-        updatables.addAll(player.getUpdatables());
-        renderUpdatables.addAll(player.getRenderUpdatables());
+        player = new Player(this);
     }
 
     private void update() {
@@ -131,6 +122,22 @@ public class Game implements Runnable {
 
     public void unregisterRenderUpdatable(RenderUpdatable updatable) {
         renderUpdatables.remove(updatable);
+    }
+    //-
+    public void registerUpdatables(Collection<Updatable> updatable) {
+        updatables.addAll(updatable);
+    }
+
+    public void unregisterUpdatables(Collection<Updatable> updatable) {
+        updatables.removeAll(updatable);
+    }
+
+    public void registerRenderUpdatables(Collection<RenderUpdatable> updatable) {
+        renderUpdatables.addAll(updatable);
+    }
+
+    public void unregisterRenderUpdatables(Collection<RenderUpdatable> updatable) {
+        renderUpdatables.removeAll(updatable);
     }
     //-------
 

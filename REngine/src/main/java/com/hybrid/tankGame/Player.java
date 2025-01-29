@@ -1,17 +1,31 @@
 package com.hybrid.tankGame;
 
 import com.hybrid.rEngine.components.*;
+import com.hybrid.rEngine.main.Game;
 import com.hybrid.rEngine.math.Vector2;
+import com.hybrid.rEngine.math.Vector2Int;
 
 public class Player extends Entity implements Updatable {
 
+    private Game game;
     private boolean moving = false, attacking = false;
     private boolean left, up, right, down;
     private float playerSpeed = 1.0f;
 
-    public Player() {
+    public Player(Game game) {
         super();
-        //TODO attach components
+        this.game = game;
+        
+        Transform transform = getComponent(Transform.class);
+        transform.setPosition(new Vector2(100,100));
+        addComponent(transform);
+        
+        Renderer renderer = new Renderer(transform, "tank_green.png", new Vector2Int(0,0), new Vector2Int(64,64));
+        addComponent(renderer);
+        
+        game.registerUpdatable(this);
+        game.registerUpdatables(getUpdatables());
+        game.registerRenderUpdatables(getRenderUpdatables());
     }
 
     public void update() {
