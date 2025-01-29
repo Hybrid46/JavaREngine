@@ -8,21 +8,20 @@ import javax.imageio.ImageIO;
 public class LoadSave {
 
     public static BufferedImage GetSprite(String fileName) {
-        fileName = "/" + fileName;
-        System.out.println("[LoadSave] Loading sprite -> " + fileName);
+        System.out.println("[LoadSave] Loading image -> " + fileName);
         
+        fileName = "/images/" + fileName;        
         BufferedImage img = null;
-        final ClassLoader clsldr = LoadSave.class.getClassLoader();
-        InputStream inputStream = clsldr.getResourceAsStream(fileName);
+        InputStream inputStream = LoadSave.class.getResourceAsStream(fileName);
 
         if (inputStream == null){
-            System.err.println("[LoadSave] Failed to load sprite -> " + fileName);
+            System.err.println("[LoadSave] Failed to load image -> " + fileName);
             //return null;
         }
         
         try {
             img = ImageIO.read(inputStream);
-            System.out.println("[LoadSave] Loaded sprite -> " + fileName);
+            System.out.println("[LoadSave] Loaded image -> " + fileName);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
