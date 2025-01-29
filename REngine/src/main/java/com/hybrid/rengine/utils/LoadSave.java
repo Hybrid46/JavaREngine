@@ -10,7 +10,7 @@ public class LoadSave {
     public static BufferedImage GetSprite(String fileName) {
         System.out.println("[LoadSave] Loading image -> " + fileName);
         
-        fileName = "/images/" + fileName;        
+        fileName = "/images/" + fileName;
         BufferedImage img = null;
         InputStream inputStream = LoadSave.class.getResourceAsStream(fileName);
 

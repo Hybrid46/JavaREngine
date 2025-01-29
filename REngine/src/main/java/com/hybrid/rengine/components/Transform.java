@@ -50,6 +50,10 @@ public class Transform extends Component implements Updatable {
     public void setPosition(Vector2 position) {
         this.position = position;
     }
+    
+    public void addPosition(Vector2 position) {
+        this.position.add(position);
+    }
 
     public float getRotation() {
         return rotation;
@@ -58,6 +62,10 @@ public class Transform extends Component implements Updatable {
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
+    
+    public void addRotation(float rotation) {
+        this.rotation += rotation;
+    }
 
     public Vector2Int getScale() {
         return scale;
@@ -65,6 +73,10 @@ public class Transform extends Component implements Updatable {
 
     public void setScale(Vector2Int scale) {
         this.scale = scale;
+    }
+    
+    public void addScale(Vector2Int scale) {
+        this.scale.add(scale);
     }
 
     @Override

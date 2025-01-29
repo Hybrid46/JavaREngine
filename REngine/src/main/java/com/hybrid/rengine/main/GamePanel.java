@@ -9,14 +9,17 @@ import static com.hybrid.rEngine.main.Game.GAME_HEIGHT;
 import static com.hybrid.rEngine.main.Game.GAME_WIDTH;
 
 public class GamePanel extends JPanel {
+
     private Game game;
     private MouseInputs mouseInputs;
+    private KeyboardInputs keyboardInputs;
 
     public GamePanel(Game game) {
-        mouseInputs = new MouseInputs(this);
         this.game = game;
+        mouseInputs = new MouseInputs(this);
+        keyboardInputs = new KeyboardInputs(this);
         setPanelSize();
-        addKeyListener(new KeyboardInputs(this));
+        addKeyListener(keyboardInputs);
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
     }
@@ -34,8 +37,16 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
         game.render(g);
     }
-    
+
     public Game getGame() {
         return game;
+    }
+
+    public KeyboardInputs getKeyboardInputs() {
+        return keyboardInputs;
+    }
+
+    public MouseInputs getMouseInputs() {
+        return mouseInputs;
     }
 }

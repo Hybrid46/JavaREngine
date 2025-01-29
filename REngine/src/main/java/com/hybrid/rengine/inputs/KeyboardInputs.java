@@ -1,55 +1,81 @@
 package com.hybrid.rEngine.inputs;
 
+import com.hybrid.rEngine.components.Updatable;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Set;
 import com.hybrid.rEngine.main.GamePanel;
 
-public class KeyboardInputs implements KeyListener {
+public class KeyboardInputs implements KeyListener, Updatable {
 
-	private GamePanel gamePanel;
+    private GamePanel gamePanel;
+    private final Set<Integer> pressedKeys = new HashSet<>();
+    private final Set<Integer> releasedKeys = new HashSet<>();
+    private final Set<Integer> changedKeys = new HashSet<>();
 
-	public KeyboardInputs(GamePanel gamePanel) {
-		this.gamePanel = gamePanel;
-	}
+    public KeyboardInputs(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public void keyTyped(KeyEvent e) {
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_W:
-			gamePanel.getGame().getPlayer().setUp(false);
-			break;
-		case KeyEvent.VK_A:
-			gamePanel.getGame().getPlayer().setLeft(false);
-			break;
-		case KeyEvent.VK_S:
-			gamePanel.getGame().getPlayer().setDown(false);
-			break;
-		case KeyEvent.VK_D:
-			gamePanel.getGame().getPlayer().setRight(false);
-			break;
-		}
-	}
+    }
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_W:
-			gamePanel.getGame().getPlayer().setUp(true);
-			break;
-		case KeyEvent.VK_A:
-			gamePanel.getGame().getPlayer().setLeft(true);
-			break;
-		case KeyEvent.VK_S:
-			gamePanel.getGame().getPlayer().setDown(true);
-			break;
-		case KeyEvent.VK_D:
-			gamePanel.getGame().getPlayer().setRight(true);
-			break;
-		}
-	}
+    public void update() {
+        // Called once per game tick to handle state transitions
+        changedKeys.clear();
+        releasedKeys.clear();
+
+        for (Integer keyCode : pressedKeys) {
+            if (!changedKeys.contains(keyCode)) {
+                changedKeys.add(keyCode);
+            }
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        if (pressedKeys.add(keyCode)) { // Ensures state changes only when key is first pressed
+            changedKeys.add(keyCode);
+            handleKeyState(keyCode, true);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        if (pressedKeys.remove(keyCode)) { // Ensures state changes only when key is released
+            releasedKeys.add(keyCode);
+            changedKeys.add(keyCode);
+            handleKeyState(keyCode, false);
+        }
+    }
+
+    private void handleKeyState(int keyCode, boolean pressed) {
+        switch (keyCode) {
+            case KeyEvent.VK_W ->
+                gamePanel.getGame().getPlayer().setUp(pressed);
+            case KeyEvent.VK_A ->
+                gamePanel.getGame().getPlayer().setLeft(pressed);
+            case KeyEvent.VK_S ->
+                gamePanel.getGame().getPlayer().setDown(pressed);
+            case KeyEvent.VK_D ->
+                gamePanel.getGame().getPlayer().setRight(pressed);
+        }
+    }
+
+    public boolean isKeyPressed(int keyCode) {
+        return pressedKeys.contains(keyCode);
+    }
+
+    public boolean isKeyReleased(int keyCode) {
+        return releasedKeys.contains(keyCode);
+    }
+
+    public boolean isKeyChanged(int keyCode) {
+        return changedKeys.contains(keyCode);
+    }
 }

@@ -1,12 +1,13 @@
 package com.hybrid.rEngine.inputs;
 
+import com.hybrid.rEngine.components.Updatable;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import com.hybrid.rEngine.main.GamePanel;
 
-public class MouseInputs implements MouseListener, MouseMotionListener {
+public class MouseInputs implements MouseListener, MouseMotionListener,Updatable {
 
 	private GamePanel gamePanel;
 
@@ -44,4 +45,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
+
+    @Override
+    public void update() {
+        
+    }
 }

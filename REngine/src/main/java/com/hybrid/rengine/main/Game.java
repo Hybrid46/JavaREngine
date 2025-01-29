@@ -35,6 +35,9 @@ public class Game implements Runnable {
         gameWindow = new GameWindow(gamePanel, false);
         gamePanel.requestFocus();
 
+        updatables.add(gamePanel.getKeyboardInputs());
+        updatables.add(gamePanel.getMouseInputs());
+        
         startGameLoop();
     }
 
@@ -53,6 +56,7 @@ public class Game implements Runnable {
         Renderer renderer = new Renderer(transform, "tank_green.png", new Vector2Int(0,0), new Vector2Int(64,64));
         player.addComponent(renderer);
         
+        updatables.add(player);
         updatables.addAll(player.getUpdatables());
         renderUpdatables.addAll(player.getRenderUpdatables());
     }
