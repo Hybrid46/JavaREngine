@@ -23,7 +23,7 @@ public class RectCollider extends Component implements Updatable {
     }
 
     public RectCollider(Transform boundTransform) {
-        this.size = boundTransform.getScale();
+        this.size = boundTransform.getScale().getVector2Int();
         this.offset = new Vector2Int();
         rectangle = new Rectangle();
         updateRectangleSize();
@@ -57,7 +57,7 @@ public class RectCollider extends Component implements Updatable {
     }
 
     private Vector2Int getCenterPosition() {
-        return Transformations.getCenterPositionWithOffsetSize(m_boundTransform.getRoundedPosition(), offset, size);
+        return Transformations.getCenterPositionWithOffsetSize(m_boundTransform.getPosition().getVector2Int(), offset, size);
         
 //        Vector2Int halfSize = new Vector2Int(
 //                Math.max(1, rectangle.width / 2),

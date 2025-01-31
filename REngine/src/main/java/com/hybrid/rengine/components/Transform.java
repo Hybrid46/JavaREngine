@@ -1,46 +1,33 @@
 package com.hybrid.rEngine.components;
 
 import com.hybrid.rEngine.math.Vector2;
-import com.hybrid.rEngine.math.Vector2Int;
 
 public class Transform extends Component implements Updatable {
 
     private Vector2 position;
-    private Vector2Int roundedPosition;
     private float rotation; // In degrees
-    private Vector2Int scale;
+    private Vector2 scale;
 
     public Transform() {
         this.position = Vector2.zero();
         this.rotation = 0;
-        this.scale = Vector2Int.one();
-        roundedPosition = calcRoundedPosition();
+        this.scale = Vector2.one();
     }
 
-    public Transform(Vector2 position, float rotation, Vector2Int scale) {
+    public Transform(Vector2 position, float rotation, Vector2 scale) {
         this.position = position;
         this.rotation = rotation;
         this.scale = scale;
-        roundedPosition = calcRoundedPosition();
     }
 
     @Override
     public void update() {
-        roundedPosition = calcRoundedPosition();
+        //Entity rigid body
     }
 
     public void setActive() {
         //super.setActive(true);
         System.err.println("Transforms must always active!");
-    }
-
-    //For rendering and collisions
-    private Vector2Int calcRoundedPosition() {
-        return new Vector2Int((int)(position.x), (int)(position.y));
-    }
-
-    public Vector2Int getRoundedPosition() {
-        return roundedPosition;
     }
 
     public Vector2 getPosition() {
@@ -50,9 +37,19 @@ public class Transform extends Component implements Updatable {
     public void setPosition(Vector2 position) {
         this.position = position;
     }
-    
+
+    public void setPosition(float x, float y) {
+        this.position.x = x;
+        this.position.y = y;
+    }
+
     public void addPosition(Vector2 position) {
         this.position.add(position);
+    }
+
+    public void addPosition(float x, float y) {
+        this.position.x += x;
+        this.position.y += y;
     }
 
     public float getRotation() {
@@ -62,25 +59,35 @@ public class Transform extends Component implements Updatable {
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
-    
+
     public void addRotation(float rotation) {
         this.rotation += rotation;
     }
 
-    public Vector2Int getScale() {
+    public Vector2 getScale() {
         return scale;
     }
 
-    public void setScale(Vector2Int scale) {
+    public void setScale(Vector2 scale) {
         this.scale = scale;
     }
-    
-    public void addScale(Vector2Int scale) {
+
+    public void setScale(float x, float y) {
+        this.scale.x = x;
+        this.scale.y = y;
+    }
+
+    public void addScale(Vector2 scale) {
         this.scale.add(scale);
+    }
+
+    public void addScale(float x, float y) {
+        this.scale.x += x;
+        this.scale.y += y;
     }
 
     @Override
     public String toString() {
-        return "Transform{" + "position=" + position + ", roundedPosition=" + roundedPosition + ", rotation=" + rotation + ", scale=" + scale + '}';
+        return "Transform{" + "position=" + position + ", rotation=" + rotation + ", scale=" + scale + '}';
     }
 }

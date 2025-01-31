@@ -54,7 +54,7 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
     }
 
     private void updateBoundingBoxPosition() {
-        Vector2Int center = Transformations.getCenterPositionWithOffsetSize(m_boundTransform.getRoundedPosition(), offset, size);
+        Vector2Int center = Transformations.getCenterPositionWithOffsetSize(m_boundTransform.getPosition().getVector2Int(), offset, size);
         boundingBox.setLocation(center.toPoint());
     }
 
