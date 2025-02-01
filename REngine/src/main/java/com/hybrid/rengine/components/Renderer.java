@@ -6,11 +6,13 @@ import com.hybrid.rEngine.utils.Transformations;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class Renderer extends Component implements Updatable, RenderUpdatable {
 
-    private BufferedImage sprite;
+    private BufferedImage image;
     private String spriteFileName;
     private Transform m_boundTransform;
     private Rectangle boundingBox;
@@ -25,7 +27,7 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
         this.offset = offset;
         this.size = size;
         this.spriteFileName = spriteFileName;
-        loadSprite();
+        loadImage();
         boundingBox = new Rectangle(size.y, size.y);
     }
 
@@ -46,7 +48,7 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
     @Override
     public void render(Graphics g) {
         drawBoundingbox(g);
-        drawSprite(g);
+        drawImage(g);
     }
 
     public Vector2Int getSize() {
@@ -58,11 +60,17 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
         boundingBox.setLocation(center.toPoint());
     }
 
-    private void drawSprite(Graphics g) {
-        g.drawImage(sprite, boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height, null);
+    private void loadImage() {
+        image = LoadSave.GetSprite(spriteFileName);
     }
 
-    private void loadSprite() {
-        sprite = LoadSave.GetSprite(spriteFileName);
+    private void drawImage(Graphics g) {
+        double rotationRequired = Math.toRadians(m_boundTransform.getRotation());
+        double locationX = boundingBox.width / 2;
+        double locationY = boundingBox.height / 2;
+        AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+
+        g.drawImage(op.filter(image, null), boundingBox.x, boundingBox.y, null);
     }
 }
