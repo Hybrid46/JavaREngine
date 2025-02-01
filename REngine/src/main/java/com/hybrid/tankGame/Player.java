@@ -1,28 +1,31 @@
 package com.hybrid.tankGame;
 
-import com.hybrid.rEngine.components.*;
+import com.hybrid.rEngine.components.Entity;
+import com.hybrid.rEngine.components.Renderer;
+import com.hybrid.rEngine.components.Transform;
+import com.hybrid.rEngine.components.Updatable;
 import com.hybrid.rEngine.main.Game;
 import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.math.Vector2Int;
 
 public class Player extends Entity implements Updatable {
 
-    private Game game;
+    private final Game game;
     private boolean moving = false, attacking = false;
     private boolean left, up, right, down;
-    private float playerSpeed = 1.0f;
+    private final float playerSpeed = 1.0f;
 
     public Player(Game game) {
         super();
         this.game = game;
-        
+
         Transform transform = getComponent(Transform.class);
-        transform.setPosition(new Vector2(100,100));
+        transform.setPosition(new Vector2(100, 100));
         addComponent(transform);
-        
-        Renderer renderer = new Renderer(transform, "tank_green.png", new Vector2Int(0,0), new Vector2Int(64,64));
+
+        Renderer renderer = new Renderer(transform, "tank_green.png", new Vector2Int(0, 0), new Vector2Int(64, 64));
         addComponent(renderer);
-        
+
         game.registerUpdatable(this);
         game.registerUpdatables(getUpdatables());
         game.registerRenderUpdatables(getRenderUpdatables());
@@ -31,6 +34,7 @@ public class Player extends Entity implements Updatable {
     public void update() {
         Transform transform = getComponent(Transform.class);
         transform.addPosition(updatePos());
+        transform.addRotation(updatePos().y);
     }
 
     private Vector2 updatePos() {

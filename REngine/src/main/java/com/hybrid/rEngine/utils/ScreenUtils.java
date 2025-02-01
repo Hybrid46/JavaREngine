@@ -1,11 +1,9 @@
 package com.hybrid.rEngine.utils;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
+import java.awt.*;
 
 public class ScreenUtils {
-     public static Rectangle GetMaximumScreenBounds() {
+    public static Rectangle GetMaximumScreenBounds() {
         int minx = 0, miny = 0, maxx = 0, maxy = 0;
         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         for (GraphicsDevice device : environment.getScreenDevices()) {

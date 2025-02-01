@@ -3,9 +3,8 @@ package com.hybrid.rEngine.components;
 import com.hybrid.rEngine.math.Vector2Int;
 import com.hybrid.rEngine.utils.LoadSave;
 import com.hybrid.rEngine.utils.Transformations;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;

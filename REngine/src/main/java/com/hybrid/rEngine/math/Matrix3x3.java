@@ -8,10 +8,10 @@ public class Matrix3x3 {
     }
 
     public void identity() {
-        m = new float[][] {
-            {1, 0, 0},
-            {0, 1, 0},
-            {0, 0, 1}
+        m = new float[][]{
+                {1, 0, 0},
+                {0, 1, 0},
+                {0, 0, 1}
         };
     }
 
@@ -30,9 +30,9 @@ public class Matrix3x3 {
         float sin = (float) Math.sin(angle);
 
         float[][] r = {
-            {cos, -sin, 0},
-            {sin, cos, 0},
-            {0, 0, 1}
+                {cos, -sin, 0},
+                {sin, cos, 0},
+                {0, 0, 1}
         };
         multiply(r);
     }
@@ -53,6 +53,6 @@ public class Matrix3x3 {
     public Vector2 transformPoint(Vector2 vector) {
         float newX = m[0][0] * vector.x + m[0][1] * vector.y + m[0][2];
         float newY = m[1][0] * vector.x + m[1][1] * vector.y + m[1][2];
-        return new Vector2 (newX, newY);
+        return new Vector2(newX, newY);
     }
 }

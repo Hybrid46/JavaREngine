@@ -2,7 +2,8 @@ package com.hybrid.rEngine.components;
 
 import com.hybrid.rEngine.math.Vector2Int;
 import com.hybrid.rEngine.utils.LoadSave;
-import java.awt.Graphics;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Animator extends Component implements Updatable, RenderUpdatable {

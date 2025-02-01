@@ -1,18 +1,19 @@
 package com.hybrid.rEngine.main;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import javax.swing.JPanel;
 import com.hybrid.rEngine.inputs.KeyboardInputs;
 import com.hybrid.rEngine.inputs.MouseInputs;
+
+import javax.swing.*;
+import java.awt.*;
+
 import static com.hybrid.rEngine.main.Game.GAME_HEIGHT;
 import static com.hybrid.rEngine.main.Game.GAME_WIDTH;
 
 public class GamePanel extends JPanel {
 
-    private Game game;
-    private MouseInputs mouseInputs;
-    private KeyboardInputs keyboardInputs;
+    private final Game game;
+    private final MouseInputs mouseInputs;
+    private final KeyboardInputs keyboardInputs;
 
     public GamePanel(Game game) {
         this.game = game;

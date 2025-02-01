@@ -1,7 +1,6 @@
 package com.hybrid.rEngine.math;
 
-import java.awt.Dimension;
-import java.awt.Point;
+import java.awt.*;
 
 public class Vector2Int {
     public int x;
@@ -59,7 +58,7 @@ public class Vector2Int {
         this.y *= other.y;
         return this;
     }
-    
+
     public Vector2Int scale(float scalar) {
         this.x = Math.round(this.x * scalar);
         this.y = Math.round(this.y * scalar);
@@ -74,7 +73,7 @@ public class Vector2Int {
 
     // Length and normalization
     public int length() {
-        return (int)Math.sqrt(x * x + y * y);
+        return (int) Math.sqrt(x * x + y * y);
     }
 
     public Vector2Int normalize() {
@@ -95,11 +94,11 @@ public class Vector2Int {
         return this.x * other.x + this.y * other.y;
     }
 
-    public Point toPoint(){
+    public Point toPoint() {
         return new Point(x, y);
     }
-    
-    public Dimension toDimension(){
+
+    public Dimension toDimension() {
         return new Dimension(x, y);
     }
 
@@ -112,8 +111,8 @@ public class Vector2Int {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        
+
         Vector2Int vector2 = (Vector2Int) obj;
-        return Integer.compare(vector2.x, x) == 0 && Integer.compare(vector2.y, y) == 0;
+        return vector2.x == x && vector2.y == y;
     }
 }

@@ -1,15 +1,15 @@
 package com.hybrid.rEngine.components;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Entity {
 
-    private boolean isStatic = false;
     private final Transform my_transform;
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
+    private boolean isStatic = false;
 
     public Entity() {
         my_transform = new Transform();
@@ -99,8 +99,9 @@ public class Entity {
         }
         return renderUpdatables;
     }
-    
-    public Transform transform(){
+
+    public Transform transform() {
+
         return my_transform;
     }
 }

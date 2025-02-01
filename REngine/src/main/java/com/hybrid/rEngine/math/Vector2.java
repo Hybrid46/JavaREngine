@@ -1,6 +1,6 @@
 package com.hybrid.rEngine.math;
 
-import java.awt.Point;
+import java.awt.*;
 
 public class Vector2 {
 

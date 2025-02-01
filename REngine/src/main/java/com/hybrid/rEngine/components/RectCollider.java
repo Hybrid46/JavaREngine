@@ -2,7 +2,8 @@ package com.hybrid.rEngine.components;
 
 import com.hybrid.rEngine.math.Vector2Int;
 import com.hybrid.rEngine.utils.Transformations;
-import java.awt.Rectangle;
+
+import java.awt.*;
 
 public class RectCollider extends Component implements Updatable {
 
@@ -29,8 +30,8 @@ public class RectCollider extends Component implements Updatable {
         updateRectangleSize();
         this.m_boundTransform = boundTransform;
     }
-    
-    public void setSize(Vector2Int size){
+
+    public void setSize(Vector2Int size) {
         this.size = size;
         updateRectangleSize();
     }
@@ -58,7 +59,7 @@ public class RectCollider extends Component implements Updatable {
 
     private Vector2Int getCenterPosition() {
         return Transformations.getCenterPositionWithOffsetSize(m_boundTransform.getPosition().getVector2Int(), offset, size);
-        
+
 //        Vector2Int halfSize = new Vector2Int(
 //                Math.max(1, rectangle.width / 2),
 //                Math.max(1, rectangle.height / 2));

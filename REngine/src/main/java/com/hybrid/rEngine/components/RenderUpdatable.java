@@ -1,7 +1,7 @@
 package com.hybrid.rEngine.components;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 public interface RenderUpdatable {
-    public void render(Graphics g);
+    void render(Graphics g);
 }

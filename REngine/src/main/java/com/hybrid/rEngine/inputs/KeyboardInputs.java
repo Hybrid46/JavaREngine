@@ -1,15 +1,16 @@
 package com.hybrid.rEngine.inputs;
 
 import com.hybrid.rEngine.components.Updatable;
+import com.hybrid.rEngine.main.GamePanel;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
-import com.hybrid.rEngine.main.GamePanel;
 
 public class KeyboardInputs implements KeyListener, Updatable {
 
-    private GamePanel gamePanel;
+    private final GamePanel gamePanel;
     private final Set<Integer> pressedKeys = new HashSet<>();
     private final Set<Integer> releasedKeys = new HashSet<>();
     private final Set<Integer> changedKeys = new HashSet<>();
@@ -29,9 +30,7 @@ public class KeyboardInputs implements KeyListener, Updatable {
         releasedKeys.clear();
 
         for (Integer keyCode : pressedKeys) {
-            if (!changedKeys.contains(keyCode)) {
-                changedKeys.add(keyCode);
-            }
+            changedKeys.add(keyCode);
         }
     }
 
@@ -56,14 +55,10 @@ public class KeyboardInputs implements KeyListener, Updatable {
 
     private void handleKeyState(int keyCode, boolean pressed) {
         switch (keyCode) {
-            case KeyEvent.VK_W ->
-                gamePanel.getGame().getPlayer().setUp(pressed);
-            case KeyEvent.VK_A ->
-                gamePanel.getGame().getPlayer().setLeft(pressed);
-            case KeyEvent.VK_S ->
-                gamePanel.getGame().getPlayer().setDown(pressed);
-            case KeyEvent.VK_D ->
-                gamePanel.getGame().getPlayer().setRight(pressed);
+            case KeyEvent.VK_W -> gamePanel.getGame().getPlayer().setUp(pressed);
+            case KeyEvent.VK_A -> gamePanel.getGame().getPlayer().setLeft(pressed);
+            case KeyEvent.VK_S -> gamePanel.getGame().getPlayer().setDown(pressed);
+            case KeyEvent.VK_D -> gamePanel.getGame().getPlayer().setRight(pressed);
         }
     }
 

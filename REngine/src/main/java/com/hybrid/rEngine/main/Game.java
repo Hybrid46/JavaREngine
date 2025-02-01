@@ -1,17 +1,17 @@
 package com.hybrid.rEngine.main;
 
-import com.hybrid.rEngine.components.*;
-import com.hybrid.rEngine.math.Vector2;
-import com.hybrid.rEngine.math.Vector2Int;
+import com.hybrid.rEngine.components.RenderUpdatable;
+import com.hybrid.rEngine.components.Updatable;
 import com.hybrid.tankGame.Player;
-import java.awt.Graphics;
+
+import java.awt.*;
 import java.util.Collection;
 import java.util.HashSet;
 
 public class Game implements Runnable {
 
-    private GameWindow gameWindow;
-    private GamePanel gamePanel;
+    private final GameWindow gameWindow;
+    private final GamePanel gamePanel;
     private Thread gameThread;
     private final int FPS_SET = 300;
     private final int UPS_SET = 200;
@@ -38,7 +38,7 @@ public class Game implements Runnable {
 
         updatables.add(gamePanel.getKeyboardInputs());
         updatables.add(gamePanel.getMouseInputs());
-        
+
         startGameLoop();
     }
 
@@ -107,41 +107,47 @@ public class Game implements Runnable {
         }
     }
 
-    //Updatables
     public void registerUpdatable(Updatable updatable) {
         updatables.add(updatable);
     }
 
     public void unregisterUpdatable(Updatable updatable) {
+
         updatables.remove(updatable);
     }
 
     public void registerRenderUpdatable(RenderUpdatable updatable) {
+
         renderUpdatables.add(updatable);
     }
 
     public void unregisterRenderUpdatable(RenderUpdatable updatable) {
+
         renderUpdatables.remove(updatable);
     }
+
     //-
     public void registerUpdatables(Collection<Updatable> updatable) {
+
         updatables.addAll(updatable);
     }
 
     public void unregisterUpdatables(Collection<Updatable> updatable) {
+
         updatables.removeAll(updatable);
     }
 
     public void registerRenderUpdatables(Collection<RenderUpdatable> updatable) {
+
         renderUpdatables.addAll(updatable);
     }
 
     public void unregisterRenderUpdatables(Collection<RenderUpdatable> updatable) {
         renderUpdatables.removeAll(updatable);
     }
-    //-------
 
     public void windowFocusLost() {
+
         player.resetDirBooleans();
     }
 

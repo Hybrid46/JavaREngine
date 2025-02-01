@@ -1,10 +1,7 @@
-package com.hybrid.rengine.components;
+package com.hybrid.rEngine.components;
 
-import com.hybrid.rEngine.components.Component;
-import com.hybrid.rEngine.components.Transform;
-import com.hybrid.rEngine.components.Updatable;
-import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.math.Matrix3x3;
+import com.hybrid.rEngine.math.Vector2;
 
 public class Camera extends Component implements Updatable {
 
