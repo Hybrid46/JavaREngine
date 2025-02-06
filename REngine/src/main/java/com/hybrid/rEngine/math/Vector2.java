@@ -60,6 +60,12 @@ public class Vector2 {
         return this;
     }
 
+    public Vector2 multiply(float scalar) {
+        this.x *= scalar;
+        this.y *= scalar;
+        return this;
+    }
+
     public Vector2 divide(float scalar) {
         if (scalar != 0) {
             this.x /= scalar;

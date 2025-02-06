@@ -1,6 +1,7 @@
 package com.hybrid.rEngine.components;
 
 import com.hybrid.rEngine.math.Vector2;
+import com.hybrid.rEngine.utils.Transformations;
 
 public class Transform extends Component implements Updatable {
 
@@ -84,6 +85,14 @@ public class Transform extends Component implements Updatable {
     public void addScale(float x, float y) {
         this.scale.x += x;
         this.scale.y += y;
+    }
+
+    public Vector2 getForward() {
+        return Transformations.getDirection(rotation + 90);
+    }
+
+    public Vector2 getRight() {
+        return Transformations.getDirection(rotation + 180);
     }
 
     @Override

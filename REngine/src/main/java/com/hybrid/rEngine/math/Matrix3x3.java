@@ -43,8 +43,8 @@ public class Matrix3x3 {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 result[i][j] = m[i][0] * other[0][j] +
-                               m[i][1] * other[1][j] +
-                               m[i][2] * other[2][j];
+                        m[i][1] * other[1][j] +
+                        m[i][2] * other[2][j];
             }
         }
         m = result;

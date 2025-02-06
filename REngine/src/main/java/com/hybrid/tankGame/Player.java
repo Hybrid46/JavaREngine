@@ -11,9 +11,10 @@ import com.hybrid.rEngine.math.Vector2Int;
 public class Player extends Entity implements Updatable {
 
     private final Game game;
+    private final float playerSpeed = 1.0f;
+    private final float playerRotationSpeed = 0.5f;
     private boolean moving = false, attacking = false;
     private boolean left, up, right, down;
-    private final float playerSpeed = 1.0f;
 
     public Player(Game game) {
         super();
@@ -33,8 +34,8 @@ public class Player extends Entity implements Updatable {
 
     public void update() {
         Transform transform = getComponent(Transform.class);
-        transform.addPosition(updatePos());
-        transform.addRotation(updatePos().y);
+        transform.addPosition(transform.getForward().multiply(updatePos().y));
+        transform.addRotation(updatePos().x);
     }
 
     private Vector2 updatePos() {
@@ -46,9 +47,9 @@ public class Player extends Entity implements Updatable {
         float xSpeed = 0, ySpeed = 0;
 
         if (left && !right) {
-            xSpeed = -playerSpeed;
+            xSpeed = -playerRotationSpeed;
         } else if (right && !left) {
-            xSpeed = playerSpeed;
+            xSpeed = playerRotationSpeed;
         }
 
         if (up && !down) {

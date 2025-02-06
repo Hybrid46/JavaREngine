@@ -7,9 +7,7 @@ public class Transformations {
 
     //For Renderers and colliders to get the center of image or collider
     public static Vector2Int getCenterPositionWithOffsetSize(Vector2Int position, Vector2Int offset, Vector2Int size) {
-        Vector2Int halfSize = new Vector2Int(
-                Math.max(1, size.x / 2),
-                Math.max(1, size.y / 2));
+        Vector2Int halfSize = new Vector2Int(Math.max(1, size.x / 2), Math.max(1, size.y / 2));
 
         Vector2Int center = position.subtract(halfSize);
         center.add(offset);
@@ -28,6 +26,18 @@ public class Transformations {
         float reverseTranslatedY = (float) rotatedY + pivot.y;
 
         return new Vector2(reverseTranslatedX, reverseTranslatedY);
+    }
+
+    public static Vector2 getDirection(float rotation) {
+        float radians = (float) Math.toRadians(rotation);
+        return new Vector2((float) Math.cos(radians), (float) Math.sin(radians)).normalize();
+    }
+
+    public static float getAngleFromDirection(Vector2 direction) {
+        float radians = (float) Math.atan2(direction.y, direction.x);
+        float degrees; //declare first to avoid compiler error
+        degrees = 180.0f * radians / (float) Math.PI;
+        return degrees;
     }
 
     //TODO camera transformations -> LocalToWorld, WorldToLocal
