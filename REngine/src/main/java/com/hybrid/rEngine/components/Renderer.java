@@ -27,14 +27,14 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
         this.size = size;
         this.spriteFileName = spriteFileName;
         loadImage();
-        boundingBox = new Rectangle(size.y, size.y);
+        boundingBox = new Rectangle(size.x, size.y);
     }
 
-    public Rectangle getBoundingbox() {
+    public Rectangle getBoundingBox() {
         return boundingBox;
     }
 
-    public void drawBoundingbox(Graphics g) {
+    public void drawBoundingBox(Graphics g) {
         g.setColor(Color.GREEN);
         g.drawRect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
     }
@@ -46,7 +46,7 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
 
     @Override
     public void render(Graphics g) {
-        drawBoundingbox(g);
+        drawBoundingBox(g);
         drawImage(g);
     }
 
@@ -65,8 +65,8 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
 
     private void drawImage(Graphics g) {
         double rotationRequired = Math.toRadians(m_boundTransform.getRotation());
-        double locationX = boundingBox.width / 2;
-        double locationY = boundingBox.height / 2;
+        double locationX = boundingBox.width / 2f;
+        double locationY = boundingBox.height / 2f;
         AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 
