@@ -20,7 +20,7 @@ public class Player extends Entity implements Updatable {
         super();
         this.game = game;
 
-        Transform transform = getComponent(Transform.class);
+        Transform transform = getTransform();
         transform.setPosition(new Vector2(100, 100));
         addComponent(transform);
 
@@ -33,7 +33,7 @@ public class Player extends Entity implements Updatable {
     }
 
     public void update() {
-        Transform transform = getComponent(Transform.class);
+        Transform transform = getTransform();
         transform.addPosition(transform.getForward().multiply(updatePos().y));
         transform.addRotation(updatePos().x);
     }

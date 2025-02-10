@@ -100,8 +100,7 @@ public class Entity {
         return renderUpdatables;
     }
 
-    public Transform transform() {
-
+    public Transform getTransform() {
         return my_transform;
     }
 }
