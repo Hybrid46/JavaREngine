@@ -24,7 +24,7 @@ public class Player extends Entity implements Updatable {
         transform.setPosition(new Vector2(100, 100));
         addComponent(transform);
 
-        Renderer renderer = new Renderer(transform, "tank_green.png", new Vector2Int(0, 0), new Vector2Int(64, 64));
+        Renderer renderer = new Renderer(transform, "tank_green.png");
         addComponent(renderer);
 
         game.registerUpdatable(this);

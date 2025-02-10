@@ -21,12 +21,21 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
     private Renderer() {
     }
 
-    public Renderer(Transform boundTransform, String spriteFileName, Vector2Int offset, Vector2Int size) {
+    public Renderer(Transform boundTransform, String spriteFileName) {
         this.m_boundTransform = boundTransform;
-        this.offset = offset;
-        this.size = size;
         this.spriteFileName = spriteFileName;
         loadImage();
+        this.size = new Vector2Int(image.getWidth(), image.getHeight());
+        this.offset = Vector2Int.zero();
+        boundingBox = new Rectangle(size.x, size.y);
+    }
+
+    public Renderer(Transform boundTransform, String spriteFileName, Vector2Int offset, Vector2Int size) {
+        this.m_boundTransform = boundTransform;
+        this.spriteFileName = spriteFileName;
+        loadImage();
+        this.size = size;
+        this.offset = offset;
         boundingBox = new Rectangle(size.x, size.y);
     }
 
