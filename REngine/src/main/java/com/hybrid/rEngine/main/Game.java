@@ -112,33 +112,27 @@ public class Game implements Runnable {
     }
 
     public void unregisterUpdatable(Updatable updatable) {
-
         updatables.remove(updatable);
     }
 
     public void registerRenderUpdatable(RenderUpdatable updatable) {
-
         renderUpdatables.add(updatable);
     }
 
     public void unregisterRenderUpdatable(RenderUpdatable updatable) {
-
         renderUpdatables.remove(updatable);
     }
 
     //-
     public void registerUpdatables(Collection<Updatable> updatable) {
-
         updatables.addAll(updatable);
     }
 
     public void unregisterUpdatables(Collection<Updatable> updatable) {
-
         updatables.removeAll(updatable);
     }
 
     public void registerRenderUpdatables(Collection<RenderUpdatable> updatable) {
-
         renderUpdatables.addAll(updatable);
     }
 
@@ -147,7 +141,6 @@ public class Game implements Runnable {
     }
 
     public void windowFocusLost() {
-
         player.resetDirBooleans();
     }
 

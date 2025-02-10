@@ -1,5 +1,7 @@
 package com.hybrid.rEngine.components;
 
+import com.hybrid.rEngine.main.Game;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,11 +9,13 @@ import java.util.Map;
 
 public class Entity {
 
+    private final Game game;
     private final Transform my_transform;
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
     private boolean isStatic = false;
 
-    public Entity() {
+    public Entity(Game game) {
+        this.game = game;
         my_transform = new Transform();
         addComponent(my_transform);
     }
@@ -25,10 +29,10 @@ public class Entity {
         T component = componentType.cast(components.remove(componentType));
 
         if (component instanceof Updatable updatable) {
-            //Game.instance().unregisterUpdatable(updatable);
+            game.unregisterUpdatable(updatable);
         }
         if (component instanceof RenderUpdatable renderUpdatable) {
-            //Game.instance().unregisterRenderUpdatable(renderUpdatable);
+            game.unregisterRenderUpdatable(renderUpdatable);
         }
 
         return component;
@@ -55,10 +59,10 @@ public class Entity {
         }
 
         if (component instanceof Updatable updatable) {
-            //Game.instance().registerUpdatable(updatable);
+            game.registerUpdatable(updatable);
         }
         if (component instanceof RenderUpdatable renderUpdatable) {
-            //Game.instance().registerRenderUpdatable(renderUpdatable);
+            game.registerRenderUpdatable(renderUpdatable);
         }
 
         components.put(component.getClass(), component);
