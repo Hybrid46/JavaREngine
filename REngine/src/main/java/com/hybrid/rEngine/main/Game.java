@@ -2,6 +2,8 @@ package com.hybrid.rEngine.main;
 
 import com.hybrid.rEngine.components.RenderUpdatable;
 import com.hybrid.rEngine.components.Updatable;
+import com.hybrid.rEngine.inputs.KeyboardInputs;
+import com.hybrid.rEngine.inputs.MouseInputs;
 import com.hybrid.tankGame.Player;
 
 import java.awt.*;
@@ -15,6 +17,8 @@ public class Game implements Runnable {
     private Thread gameThread;
     private final int FPS_SET = 300;
     private final int UPS_SET = 200;
+    public final KeyboardInputs keyboardInput;
+    public final MouseInputs mouseInput;
     private Player player;
     //private LevelManager levelManager;
 
@@ -36,8 +40,11 @@ public class Game implements Runnable {
         gameWindow = new GameWindow(gamePanel, false);
         gamePanel.requestFocus();
 
-        updatables.add(gamePanel.getKeyboardInputs());
-        updatables.add(gamePanel.getMouseInputs());
+        keyboardInput = gamePanel.getKeyboardInputs();
+        mouseInput = gamePanel.getMouseInputs();
+
+        updatables.add(keyboardInput);
+        updatables.add(mouseInput);
 
         startGameLoop();
     }
