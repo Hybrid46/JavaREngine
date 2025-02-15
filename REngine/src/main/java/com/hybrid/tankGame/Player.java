@@ -26,6 +26,7 @@ public class Player extends Entity implements Updatable {
         addComponent(renderer);
 
         game.registerUpdatable(this);
+        game.registerEntity(this);
     }
 
     public void update() {

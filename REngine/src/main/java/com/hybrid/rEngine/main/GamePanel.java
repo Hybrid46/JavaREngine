@@ -2,12 +2,10 @@ package com.hybrid.rEngine.main;
 
 import com.hybrid.rEngine.inputs.KeyboardInputs;
 import com.hybrid.rEngine.inputs.MouseInputs;
+import com.hybrid.rEngine.utils.ScreenUtils;
 
 import javax.swing.*;
 import java.awt.*;
-
-import static com.hybrid.rEngine.main.Game.GAME_HEIGHT;
-import static com.hybrid.rEngine.main.Game.GAME_WIDTH;
 
 public class GamePanel extends JPanel {
 
@@ -26,7 +24,8 @@ public class GamePanel extends JPanel {
     }
 
     private void setPanelSize() {
-        Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
+        Rectangle screenRect = ScreenUtils.GetScreenBounds(0);
+        Dimension size = new Dimension(screenRect.width / 2,screenRect.height / 2);
         setPreferredSize(size);
     }
 

@@ -1,5 +1,6 @@
 package com.hybrid.rEngine.main;
 
+import com.hybrid.rEngine.components.Entity;
 import com.hybrid.rEngine.components.RenderUpdatable;
 import com.hybrid.rEngine.components.Updatable;
 import com.hybrid.rEngine.inputs.KeyboardInputs;
@@ -22,16 +23,9 @@ public class Game implements Runnable {
     private Player player;
     //private LevelManager levelManager;
 
-    public final static int TILES_DEFAULT_SIZE = 32;
-    public final static float SCALE = 2f;
-    public final static int TILES_IN_WIDTH = 26;
-    public final static int TILES_IN_HEIGHT = 14;
-    public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
-    public static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
-    public static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
-
     private final HashSet<Updatable> updatables = new HashSet<>();
     private final HashSet<RenderUpdatable> renderUpdatables = new HashSet<>();
+    private final HashSet<Entity> entities = new HashSet<>();
 
     public Game() {
         start();
@@ -149,6 +143,14 @@ public class Game implements Runnable {
 
     public void windowFocusLost() {
         player.resetDirBooleans();
+    }
+
+    public void registerEntity(Entity entity){
+        entities.add(entity);
+    }
+
+    public void unregisterEntity(Entity entity){
+        entities.remove(entity);
     }
 
     public Player getPlayer() {
