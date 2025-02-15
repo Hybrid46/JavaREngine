@@ -1,45 +1,65 @@
 package com.hybrid.tankGame;
 
 import com.hybrid.rEngine.main.Game;
+import java.util.Arrays;
 
 public class LevelGenerator {
 
-    private final int MAP_SIZE = 20;
+    private final int MAP_SIZE = 10;
     private final int TILE_SIZE = 64;
 
-    public boolean[][] pathMap = new boolean[MAP_SIZE][MAP_SIZE];
+    public final boolean[][] pathMap = new boolean[MAP_SIZE][MAP_SIZE];
 
     public void generateLevel(Game game) {
-        //path map first
+        generateRandomMap();
+        //filter unreachable areas -> make sure all neighbours are walkable
+        filterNeighbours();
+        printMap();
+        generateTileEntites(game);
+    }
+
+    private void generateRandomMap() {
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
-                pathMap[x][y] = Math.random() > 0.5f;
+                pathMap[x][y] = Math.random() > 0.5d;
             }
         }
+    }
 
-        //filter unreachable areas -> make sure all neighbours are walkable
+    private void filterNeighbours() {
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
-                if (!pathMap[x][y]) { //non walkable -> set all neighbours walkable
-                    //neighbours
-                    for (int yy = -1; yy < 1; yy++) {
-                        for (int xx = -1; xx < 1; xx++) {
-                            //skip out of map bounds
-                            if (xx < 0 || xx >= MAP_SIZE) continue;
-                            if (yy < 0 || yy >= MAP_SIZE) continue;
+                if (!pathMap[x][y]) {
 
-                            if (pathMap[xx][yy] == false) pathMap[xx][yy] = true;
+                    for (int yy = -1; yy <= 1; yy++) {
+                        for (int xx = -1; xx <= 1; xx++) {
+                            if (xx == 0 && yy == 0) continue;
+
+                            int nx = x + xx;
+                            int ny = y + yy;
+
+                            //skip out of map bounds
+                            if (nx < 0 || nx >= MAP_SIZE) continue;
+                            if (ny < 0 || ny >= MAP_SIZE) continue;
+
+                            pathMap[nx][ny] = true;
                         }
                     }
                 }
             }
         }
+    }
 
-        //tile Entity generation
+    private void generateTileEntites(Game game) {
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
                 new Tile(game, x * TILE_SIZE, y * TILE_SIZE, pathMap[x][y]);
             }
         }
+    }
+
+    private void printMap(){
+        System.out.println("[LevelGenerator] Path Map:");
+        System.out.println(Arrays.deepToString(pathMap).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
     }
 }
