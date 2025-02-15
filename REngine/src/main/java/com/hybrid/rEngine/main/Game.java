@@ -5,6 +5,7 @@ import com.hybrid.rEngine.components.RenderUpdatable;
 import com.hybrid.rEngine.components.Updatable;
 import com.hybrid.rEngine.inputs.KeyboardInputs;
 import com.hybrid.rEngine.inputs.MouseInputs;
+import com.hybrid.rEngine.utils.ScreenUtils;
 import com.hybrid.tankGame.LevelGenerator;
 import com.hybrid.tankGame.Player;
 
@@ -17,7 +18,7 @@ public class Game implements Runnable {
     private final GameWindow gameWindow;
     private final GamePanel gamePanel;
     private Thread gameThread;
-    private final int FPS_SET = 300;
+    private final int FPS_SET = ScreenUtils.getRefreshRate(0);
     private final int UPS_SET = 200;
     public final KeyboardInputs keyboardInput;
     public final MouseInputs mouseInput;
@@ -104,7 +105,7 @@ public class Game implements Runnable {
 
             if (System.currentTimeMillis() - lastCheck >= 1000) {
                 lastCheck = System.currentTimeMillis();
-                System.out.println("FPS: " + frames + " | UPS: " + updates);
+                System.out.println("FPS: " + frames + " | UPS: " + updates + " | Entities: " + entities.size() + " | Updatables: " + updatables.size() + " | RenderUpdatables: " + renderUpdatables.size());
                 frames = 0;
                 updates = 0;
             }

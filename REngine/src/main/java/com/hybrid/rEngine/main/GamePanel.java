@@ -25,13 +25,9 @@ public class GamePanel extends JPanel {
     }
 
     private void setPanelSize() {
-        Rectangle screenRect = ScreenUtils.GetScreenBounds(0);
+        Rectangle screenRect = ScreenUtils.getScreenBounds(0);
         Dimension size = new Dimension(screenRect.width / 2,screenRect.height / 2);
         setPreferredSize(size);
-    }
-
-    public void updateGame() {
-
     }
 
     public void paintComponent(Graphics g) {

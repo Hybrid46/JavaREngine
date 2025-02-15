@@ -3,7 +3,7 @@ package com.hybrid.rEngine.utils;
 import java.awt.*;
 
 public class ScreenUtils {
-    public static Rectangle GetMaximumScreenBounds() {
+    public static Rectangle getMaximumScreenBounds() {
         int minx = 0, miny = 0, maxx = 0, maxy = 0;
         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         for (GraphicsDevice device : environment.getScreenDevices()) {
@@ -16,7 +16,7 @@ public class ScreenUtils {
         return new Rectangle(minx, miny, maxx - minx, maxy - miny);
     }
 
-    public static Rectangle GetScreenBounds(int displayIndex) {
+    public static Rectangle getScreenBounds(int displayIndex) {
         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] devices = environment.getScreenDevices();
         if (displayIndex >= 0 && displayIndex < devices.length) {
@@ -25,5 +25,15 @@ public class ScreenUtils {
         }
 
         return new Rectangle(400, 300);
+    }
+
+    public static int getRefreshRate(int displayIndex) {
+        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] devices = environment.getScreenDevices();
+        if (displayIndex >= 0 && displayIndex < devices.length) {
+            return devices[displayIndex].getDefaultConfiguration().getDevice().getDisplayMode().getRefreshRate();
+        }
+
+        return 60;
     }
 }

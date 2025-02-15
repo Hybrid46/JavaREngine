@@ -8,7 +8,7 @@ import java.io.InputStream;
 public class LoadSave {
 
     public static BufferedImage GetSprite(String fileName) {
-        System.out.println("[LoadSave] Loading image -> " + fileName);
+        //System.out.println("[LoadSave] Loading image -> " + fileName);
 
         fileName = "/images/" + fileName;
         BufferedImage img = null;
@@ -21,7 +21,7 @@ public class LoadSave {
 
         try {
             img = ImageIO.read(inputStream);
-            System.out.println("[LoadSave] Loaded image -> " + fileName);
+            //System.out.println("[LoadSave] Loaded image -> " + fileName);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
