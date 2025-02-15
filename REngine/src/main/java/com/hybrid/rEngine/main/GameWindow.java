@@ -13,6 +13,9 @@ public class GameWindow {
 
         jframe = new JFrame();
 
+        jframe.setAlwaysOnTop(false);
+        //jframe.setBackground(Color.BLACK);
+
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.add(gamePanel);
         jframe.setLocationRelativeTo(null);
