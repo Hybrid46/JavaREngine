@@ -6,9 +6,9 @@ import com.hybrid.rEngine.components.Transform;
 import com.hybrid.rEngine.components.Updatable;
 import com.hybrid.rEngine.main.Game;
 import com.hybrid.rEngine.math.Vector2;
-import com.hybrid.rEngine.math.Vector2Int;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 public class Player extends Entity implements Updatable {
 
@@ -40,6 +40,20 @@ public class Player extends Entity implements Updatable {
         setDown(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_S));
         setLeft(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_A));
         setRight(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_D));
+
+        if (getGame().mouseInput.isButtonPressed(MouseEvent.BUTTON1)) {
+            System.out.println("Player, button 1 pressed");
+            setAttacking(true);
+            doAttack();
+        }
+
+        if (getGame().mouseInput.isButtonPressed(MouseEvent.BUTTON2)) {
+            System.out.println("Player, button 2 pressed");
+        }
+
+        if (getGame().mouseInput.isButtonPressed(MouseEvent.BUTTON3)) {
+            System.out.println("Player, button 3 pressed");
+        }
     }
 
     private Vector2 updatePos() {
@@ -63,6 +77,11 @@ public class Player extends Entity implements Updatable {
         }
 
         return new Vector2(xSpeed, ySpeed);
+    }
+
+    public void doAttack() {
+        System.out.println("Attack!");
+        attacking = false;
     }
 
     public void resetDirBooleans() {
