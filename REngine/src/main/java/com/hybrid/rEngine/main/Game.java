@@ -39,9 +39,6 @@ public class Game implements Runnable {
         keyboardInput = gamePanel.getKeyboardInputs();
         mouseInput = gamePanel.getMouseInputs();
 
-        updatables.add(keyboardInput);
-        updatables.add(mouseInput);
-
         startGameLoop();
     }
 
@@ -58,9 +55,12 @@ public class Game implements Runnable {
     }
 
     private void update() {
+
         for (Updatable updatable : updatables) {
             updatable.update();
         }
+        keyboardInput.update();
+        mouseInput.update();
     }
 
     public void render(Graphics g) {
@@ -127,7 +127,7 @@ public class Game implements Runnable {
     public void unregisterRenderUpdatable(RenderUpdatable updatable) {
         renderUpdatables.remove(updatable);
     }
-    
+
     public void registerUpdatables(Collection<Updatable> updatable) {
         updatables.addAll(updatable);
     }
