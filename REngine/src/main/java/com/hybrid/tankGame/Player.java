@@ -8,6 +8,8 @@ import com.hybrid.rEngine.main.Game;
 import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.math.Vector2Int;
 
+import java.awt.event.KeyEvent;
+
 public class Player extends Entity implements Updatable {
 
     private final float playerSpeed = 1.0f;
@@ -33,6 +35,11 @@ public class Player extends Entity implements Updatable {
         Transform transform = getTransform();
         transform.addPosition(transform.getForward().multiply(updatePos().y));
         transform.addRotation(updatePos().x);
+
+        setUp(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_W));
+        setDown(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_S));
+        setLeft(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_A));
+        setRight(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_D));
     }
 
     private Vector2 updatePos() {

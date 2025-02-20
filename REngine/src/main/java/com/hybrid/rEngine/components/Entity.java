@@ -107,4 +107,8 @@ public class Entity {
     public Transform getTransform() {
         return my_transform;
     }
+
+    public Game getGame() {
+        return game;
+    }
 }

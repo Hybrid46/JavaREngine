@@ -39,7 +39,6 @@ public class KeyboardInputs implements KeyListener, Updatable {
         int keyCode = e.getKeyCode();
         if (pressedKeys.add(keyCode)) { // Ensures state changes only when key is first pressed
             changedKeys.add(keyCode);
-            handleKeyState(keyCode, true);
         }
     }
 
@@ -49,16 +48,6 @@ public class KeyboardInputs implements KeyListener, Updatable {
         if (pressedKeys.remove(keyCode)) { // Ensures state changes only when key is released
             releasedKeys.add(keyCode);
             changedKeys.add(keyCode);
-            handleKeyState(keyCode, false);
-        }
-    }
-
-    private void handleKeyState(int keyCode, boolean pressed) {
-        switch (keyCode) {
-            case KeyEvent.VK_W -> gamePanel.getGame().getPlayer().setUp(pressed);
-            case KeyEvent.VK_A -> gamePanel.getGame().getPlayer().setLeft(pressed);
-            case KeyEvent.VK_S -> gamePanel.getGame().getPlayer().setDown(pressed);
-            case KeyEvent.VK_D -> gamePanel.getGame().getPlayer().setRight(pressed);
         }
     }
 

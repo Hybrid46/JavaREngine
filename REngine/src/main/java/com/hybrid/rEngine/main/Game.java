@@ -127,8 +127,7 @@ public class Game implements Runnable {
     public void unregisterRenderUpdatable(RenderUpdatable updatable) {
         renderUpdatables.remove(updatable);
     }
-
-    //-
+    
     public void registerUpdatables(Collection<Updatable> updatable) {
         updatables.addAll(updatable);
     }
