@@ -84,6 +84,9 @@ public class Game implements Runnable {
         double deltaU = 0;
         double deltaF = 0;
 
+        long updateTime = 0;
+        long renderTime = 0;
+
         while (true) {
             long currentTime = System.nanoTime();
 
@@ -92,20 +95,24 @@ public class Game implements Runnable {
             previousTime = currentTime;
 
             if (deltaU >= 1) {
+                updateTime = System.nanoTime();
                 update();
+                updateTime = System.nanoTime() - updateTime;
                 updates++;
                 deltaU--;
             }
 
             if (deltaF >= 1) {
+                renderTime = System.nanoTime();
                 gamePanel.repaint();
+                renderTime = System.nanoTime() - renderTime;
                 frames++;
                 deltaF--;
             }
 
             if (System.currentTimeMillis() - lastCheck >= 1000) {
                 lastCheck = System.currentTimeMillis();
-                System.out.println("FPS: " + frames + " | UPS: " + updates + " | Entities: " + entities.size() + " | Updatables: " + updatables.size() + " | RenderUpdatables: " + renderUpdatables.size());
+                System.out.println("FPS: " + frames + " | UPS: " + updates + " | Entities: " + entities.size() + " | Updatables: " + updatables.size() + " | RenderUpdatables: " + renderUpdatables.size() + " | update time: " + updateTime + " | render time: " + renderTime);
                 frames = 0;
                 updates = 0;
             }

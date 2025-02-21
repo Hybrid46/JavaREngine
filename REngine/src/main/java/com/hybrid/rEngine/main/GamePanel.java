@@ -27,6 +27,7 @@ public class GamePanel extends JPanel {
     private void setPanelSize() {
         Rectangle screenRect = ScreenUtils.getScreenBounds(0);
         Dimension size = new Dimension(screenRect.width / 2,screenRect.height / 2);
+        System.out.println("Width: " + screenRect.width / 2 + " Height: " + screenRect.height / 2);
         setPreferredSize(size);
     }
 
