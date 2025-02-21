@@ -15,7 +15,7 @@ public class LevelGenerator {
         //filter unreachable areas -> make sure all neighbours are walkable
         filterNeighbours();
         printMap();
-        generateTileEntites(game);
+        generateTileEntities(game);
     }
 
     private void generateRandomMap() {
@@ -50,7 +50,7 @@ public class LevelGenerator {
         }
     }
 
-    private void generateTileEntites(Game game) {
+    private void generateTileEntities(Game game) {
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
                 new Tile(game, x * TILE_SIZE, y * TILE_SIZE, pathMap[x][y]);
