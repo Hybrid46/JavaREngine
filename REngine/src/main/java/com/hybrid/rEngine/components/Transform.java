@@ -3,7 +3,7 @@ package com.hybrid.rEngine.components;
 import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.utils.Transformations;
 
-public class Transform extends Component implements Updatable {
+public class Transform extends Component {
 
     private Vector2 position;
     private float rotation; // In degrees
@@ -19,11 +19,6 @@ public class Transform extends Component implements Updatable {
         this.position = position;
         this.rotation = rotation;
         this.scale = scale;
-    }
-
-    @Override
-    public void update() {
-        //Entity rigid body
     }
 
     public void setActive() {
