@@ -73,12 +73,13 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
     }
 
     private void drawImage(Graphics2D g2d) {
-        double rotationRequired = Math.toRadians(m_boundTransform.getRotation());
-        double locationX = boundingBox.width / 2f;
-        double locationY = boundingBox.height / 2f;
-        AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
-        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+        double centerX = boundingBox.width / 2f;
+        double centerY = boundingBox.height / 2f;
 
-        g2d.drawImage(op.filter(image, null), boundingBox.x, boundingBox.y, null);
+        g2d.translate(boundingBox.x + centerX, boundingBox.y + centerY);
+        g2d.rotate(Math.toRadians(m_boundTransform.getRotation()));
+        g2d.drawImage(image, -boundingBox.width / 2, -boundingBox.height / 2, null);
+        g2d.rotate(-Math.toRadians(m_boundTransform.getRotation()));
+        g2d.translate(-(boundingBox.x + centerX), -(boundingBox.y + centerY));
     }
 }
