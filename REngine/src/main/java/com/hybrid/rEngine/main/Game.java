@@ -15,19 +15,18 @@ import java.util.HashSet;
 
 public class Game implements Runnable {
 
-    private final GameWindow gameWindow;
-    private final GamePanel gamePanel;
-    private Thread gameThread;
-    private final int FPS_SET = ScreenUtils.getRefreshRate(0);
-    private final int UPS_SET = 200;
     public final KeyboardInputs keyboardInput;
     public final MouseInputs mouseInput;
-    private Player player;
-    //private LevelManager levelManager;
-
+    private final GameWindow gameWindow;
+    private final GamePanel gamePanel;
+    private final int FPS_SET = ScreenUtils.getRefreshRate(0);
+    private final int UPS_SET = 200;
     private final HashSet<Updatable> updatables = new HashSet<>();
     private final HashSet<RenderUpdatable> renderUpdatables = new HashSet<>();
+    //private LevelManager levelManager;
     private final HashSet<Entity> entities = new HashSet<>();
+    private Thread gameThread;
+    private Player player;
 
     public Game() {
         start();
@@ -63,9 +62,9 @@ public class Game implements Runnable {
         mouseInput.update();
     }
 
-    public void render(Graphics g) {
+    public void render(Graphics2D g2d) {
         for (RenderUpdatable renderUpdatable : renderUpdatables) {
-            renderUpdatable.render(g);
+            renderUpdatable.render(g2d);
         }
     }
 
@@ -112,7 +111,15 @@ public class Game implements Runnable {
 
             if (System.currentTimeMillis() - lastCheck >= 1000) {
                 lastCheck = System.currentTimeMillis();
-                System.out.println("FPS: " + frames + " | UPS: " + updates + " | Entities: " + entities.size() + " | Updatables: " + updatables.size() + " | RenderUpdatables: " + renderUpdatables.size() + " | update time: " + updateTime + " | render time: " + renderTime);
+                System.out.println("FPS: " + frames +
+                        " | UPS: " + updates +
+                        " | Entities: " + entities.size() +
+                        " | Updatables: " + updatables.size() +
+                        " | RenderUpdatables: " + renderUpdatables.size() +
+                        " | update time: " + updateTime / 1000f + " micro sec" +
+                        " | render time: " + renderTime / 1000f + " micro sec" +
+                        " | Avg update time: " + (int)(updateTime / 1000f / 1000f * UPS_SET) + " ms" +
+                        " | Avg render time: " + (int)(renderTime / 1000f / 1000f * FPS_SET) + " ms");
                 frames = 0;
                 updates = 0;
             }
@@ -155,11 +162,11 @@ public class Game implements Runnable {
         player.resetDirBooleans();
     }
 
-    public void registerEntity(Entity entity){
+    public void registerEntity(Entity entity) {
         entities.add(entity);
     }
 
-    public void unregisterEntity(Entity entity){
+    public void unregisterEntity(Entity entity) {
         entities.remove(entity);
     }
 

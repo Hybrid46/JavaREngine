@@ -43,9 +43,9 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
         return boundingBox;
     }
 
-    public void drawBoundingBox(Graphics g) {
-        g.setColor(Color.GREEN);
-        g.drawRect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
+    public void drawBoundingBox(Graphics2D g2d) {
+        g2d.setColor(Color.GREEN);
+        g2d.drawRect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
     }
 
     @Override
@@ -54,9 +54,9 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
     }
 
     @Override
-    public void render(Graphics g) {
-        drawBoundingBox(g);
-        drawImage(g);
+    public void render(Graphics2D g2d) {
+        drawBoundingBox(g2d);
+        drawImage(g2d);
     }
 
     public Vector2Int getSize() {
@@ -72,13 +72,13 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
         image = LoadSave.GetSprite(spriteFileName);
     }
 
-    private void drawImage(Graphics g) {
+    private void drawImage(Graphics2D g2d) {
         double rotationRequired = Math.toRadians(m_boundTransform.getRotation());
         double locationX = boundingBox.width / 2f;
         double locationY = boundingBox.height / 2f;
         AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 
-        g.drawImage(op.filter(image, null), boundingBox.x, boundingBox.y, null);
+        g2d.drawImage(op.filter(image, null), boundingBox.x, boundingBox.y, null);
     }
 }

@@ -43,9 +43,9 @@ public class Animator extends Component implements Updatable, RenderUpdatable {
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics2D g2d) {
         updateAnimation();
-        drawAnimation(g);
+        drawAnimation(g2d);
     }
 
     private void updateAnimation() {
@@ -60,8 +60,8 @@ public class Animator extends Component implements Updatable, RenderUpdatable {
         }
     }
 
-    private void drawAnimation(Graphics g) {
-        //g.drawImage(animation[aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), subImageSize.x, subImageSize.y, null);
+    private void drawAnimation(Graphics2D g2d) {
+        //g2d.drawImage(animation[aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), subImageSize.x, subImageSize.y, null);
     }
 
     private void resetAnimation() {
