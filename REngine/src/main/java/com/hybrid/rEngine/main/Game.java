@@ -10,8 +10,10 @@ import com.hybrid.tankGame.LevelGenerator;
 import com.hybrid.tankGame.Player;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.TreeMap;
 
 public class Game implements Runnable {
 
@@ -23,7 +25,7 @@ public class Game implements Runnable {
     private final int UPS_SET = 200;
     private final HashSet<Updatable> updatables = new HashSet<>();
     private final HashSet<RenderUpdatable> renderUpdatables = new HashSet<>();
-    //private LevelManager levelManager;
+    private final TreeMap<Integer, ArrayList<RenderUpdatable>> layeredRenderUpdatables = new TreeMap<>();
     private final HashSet<Entity> entities = new HashSet<>();
     private Thread gameThread;
     private Player player;
@@ -54,7 +56,6 @@ public class Game implements Runnable {
     }
 
     private void update() {
-
         for (Updatable updatable : updatables) {
             updatable.update();
         }
@@ -63,8 +64,22 @@ public class Game implements Runnable {
     }
 
     public void render(Graphics2D g2d) {
+        layeredRenderUpdatables.clear();
+
         for (RenderUpdatable renderUpdatable : renderUpdatables) {
-            renderUpdatable.render(g2d);
+            int renderUpdatableLayer = renderUpdatable.getLayer();
+
+            if (!layeredRenderUpdatables.containsKey(renderUpdatableLayer)) {
+                layeredRenderUpdatables.put(renderUpdatableLayer, new ArrayList<>());
+            }
+
+            layeredRenderUpdatables.get(renderUpdatableLayer).add(renderUpdatable);
+        }
+
+        for (int layer : layeredRenderUpdatables.keySet()) {
+            for (RenderUpdatable renderer : layeredRenderUpdatables.get(layer)) {
+                renderer.render(g2d);
+            }
         }
     }
 
@@ -118,8 +133,8 @@ public class Game implements Runnable {
                         " | RenderUpdatables: " + renderUpdatables.size() +
                         " | update time: " + updateTime / 1000f + " micro sec" +
                         " | render time: " + renderTime / 1000f + " micro sec" +
-                        " | Avg update time: " + (int)(updateTime / 1000f / 1000f * UPS_SET) + " ms" +
-                        " | Avg render time: " + (int)(renderTime / 1000f / 1000f * FPS_SET) + " ms");
+                        " | Avg update time: " + (int) (updateTime / 1000f / 1000f * UPS_SET) + " ms" +
+                        " | Avg render time: " + (int) (renderTime / 1000f / 1000f * FPS_SET) + " ms");
                 frames = 0;
                 updates = 0;
             }

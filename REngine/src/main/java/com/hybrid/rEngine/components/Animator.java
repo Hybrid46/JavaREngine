@@ -17,6 +17,7 @@ public class Animator extends Component implements Updatable, RenderUpdatable {
     private int aniTick = 0;
     private int aniIndex = 0;
     private final int aniSpeed = 30; //UPS time
+    private int layer;
 
     //TODO
     private Animator() {
@@ -67,5 +68,9 @@ public class Animator extends Component implements Updatable, RenderUpdatable {
     private void resetAnimation() {
         aniTick = 0;
         aniIndex = 0;
+    }
+
+    public int getLayer() {
+        return layer;
     }
 }

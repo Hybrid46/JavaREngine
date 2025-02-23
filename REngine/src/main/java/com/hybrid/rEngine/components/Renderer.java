@@ -5,8 +5,6 @@ import com.hybrid.rEngine.utils.LoadSave;
 import com.hybrid.rEngine.utils.Transformations;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class Renderer extends Component implements Updatable, RenderUpdatable {
@@ -17,17 +15,19 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
     private Rectangle boundingBox;
     private Vector2Int offset;
     private Vector2Int size;
+    private int layer;
 
     private Renderer() {
     }
 
-    public Renderer(Transform boundTransform, String spriteFileName) {
+    public Renderer(Transform boundTransform, String spriteFileName, int layer) {
         this.m_boundTransform = boundTransform;
         this.spriteFileName = spriteFileName;
         loadImage();
         this.size = new Vector2Int(image.getWidth(), image.getHeight());
         this.offset = Vector2Int.zero();
         boundingBox = new Rectangle(size.x, size.y);
+        this.layer = layer;
     }
 
     public Renderer(Transform boundTransform, String spriteFileName, Vector2Int offset, Vector2Int size) {
@@ -61,6 +61,20 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
 
     public Vector2Int getSize() {
         return size;
+    }
+
+    public int getLayer() {
+        return layer;
+    }
+
+    //returns true if layer changes
+    public boolean setLayer(int newLayer) {
+        if (layer != newLayer) {
+            layer = newLayer;
+            return true;
+        }
+
+        return false;
     }
 
     private void updateBoundingBoxPosition() {
