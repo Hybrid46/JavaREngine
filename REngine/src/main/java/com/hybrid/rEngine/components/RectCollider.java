@@ -5,7 +5,7 @@ import com.hybrid.rEngine.utils.Transformations;
 
 import java.awt.*;
 
-public class RectCollider extends Component implements Updatable {
+public class RectCollider extends Component implements Updatable, Collider {
 
     private Rectangle rectangle;
     private Transform m_boundTransform;
@@ -36,6 +36,10 @@ public class RectCollider extends Component implements Updatable {
         updateRectanglePosition();
     }
 
+    public boolean isStatic(){
+        return m_boundTransform.isStatic();
+    }
+
     public boolean isOverlapping(Rectangle comparedRectangle) {
         return rectangle.intersects(comparedRectangle);
     }
@@ -58,27 +62,26 @@ public class RectCollider extends Component implements Updatable {
 
     public void resolveCollision(RectCollider other) {
         if (isOverlapping(other.rectangle)) {
-            // Calculate overlap
-            int overlapWidth = (rectangle.width + other.rectangle.width - Math.abs(rectangle.x - other.rectangle.x));
-            int overlapHeight = (rectangle.height + other.rectangle.height - Math.abs(rectangle.y - other.rectangle.y));
+            // Calculate overlap distances on both axes
+            int deltaX = (rectangle.x + rectangle.width / 2) - (other.rectangle.x + other.rectangle.width / 2);
+            int deltaY = (rectangle.y + rectangle.height / 2) - (other.rectangle.y + other.rectangle.height / 2);
+            int overlapX = (rectangle.width / 2 + other.rectangle.width / 2) - Math.abs(deltaX);
+            int overlapY = (rectangle.height / 2 + other.rectangle.height / 2) - Math.abs(deltaY);
 
-            // If there's overlap, adjust positions to resolve collision
-            if (overlapWidth > 0 && overlapHeight > 0) {
-                // Calculate the direction of movement
-                Vector2Int thisVelocity = m_boundTransform.getVelocity().getVector2Int();
-                Vector2Int otherVelocity = other.m_boundTransform.getVelocity().getVector2Int();
-
-                // Stop overlapping objects
-                if (thisVelocity.x * (rectangle.x - other.rectangle.x) + thisVelocity.y * (rectangle.y - other.rectangle.y) < 0) {
-                    m_boundTransform.setX(rectangle.x - overlapWidth);
+            if (overlapX > 0 && overlapY > 0) {
+                // Resolve along the axis of least penetration
+                if (overlapX < overlapY) {
+                    if (deltaX > 0) {
+                        m_boundTransform.setX(m_boundTransform.getX() + overlapX);
+                    } else {
+                        m_boundTransform.setX(m_boundTransform.getX() - overlapX);
+                    }
                 } else {
-                    m_boundTransform.setX(other.rectangle.x + other.rectangle.width);
-                }
-
-                if (thisVelocity.x * (rectangle.x - other.rectangle.x) + thisVelocity.y * (rectangle.y - other.rectangle.y) > 0) {
-                    m_boundTransform.setY(other.rectangle.y + other.rectangle.height);
-                } else {
-                    m_boundTransform.setY(rectangle.y - overlapHeight);
+                    if (deltaY > 0) {
+                        m_boundTransform.setY(m_boundTransform.getY() + overlapY);
+                    } else {
+                        m_boundTransform.setY(m_boundTransform.getY() - overlapY);
+                    }
                 }
             }
         }

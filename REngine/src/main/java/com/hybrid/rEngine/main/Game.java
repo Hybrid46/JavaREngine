@@ -1,8 +1,6 @@
 package com.hybrid.rEngine.main;
 
-import com.hybrid.rEngine.components.Entity;
-import com.hybrid.rEngine.components.RenderUpdatable;
-import com.hybrid.rEngine.components.Updatable;
+import com.hybrid.rEngine.components.*;
 import com.hybrid.rEngine.inputs.KeyboardInputs;
 import com.hybrid.rEngine.inputs.MouseInputs;
 import com.hybrid.rEngine.utils.ScreenUtils;
@@ -26,6 +24,7 @@ public class Game implements Runnable {
     private final HashSet<Updatable> updatables = new HashSet<>();
     private final HashSet<RenderUpdatable> renderUpdatables = new HashSet<>();
     private final TreeMap<Integer, ArrayList<RenderUpdatable>> layeredRenderUpdatables = new TreeMap<>();
+    private final ArrayList<Collider> colliders = new ArrayList<>();
     private final HashSet<Entity> entities = new HashSet<>();
     private Thread gameThread;
     private Player player;
@@ -56,11 +55,31 @@ public class Game implements Runnable {
     }
 
     private void update() {
+        colliders.clear();
+
         for (Updatable updatable : updatables) {
             updatable.update();
+            if (updatable instanceof Collider) colliders.add((Collider)updatable);
         }
         keyboardInput.update();
         mouseInput.update();
+
+        updateCollisions();
+    }
+
+    private void updateCollisions(){
+        for (int c = 0; c < colliders.size(); c++) {
+            for (int o = 0; o < colliders.size(); o++) {
+                if (c == o) continue;
+
+                //rec-rect collision check
+                if (colliders.get(c) instanceof RectCollider && colliders.get(o) instanceof RectCollider)  {
+                    ((RectCollider) colliders.get(c)).resolveCollision((RectCollider) colliders.get(o));
+                }
+
+                //other collision types...
+            }
+        }
     }
 
     public void render(Graphics2D g2d) {

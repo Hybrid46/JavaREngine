@@ -1,11 +1,9 @@
 package com.hybrid.tankGame;
 
-import com.hybrid.rEngine.components.Entity;
-import com.hybrid.rEngine.components.Renderer;
-import com.hybrid.rEngine.components.Transform;
-import com.hybrid.rEngine.components.Updatable;
+import com.hybrid.rEngine.components.*;
 import com.hybrid.rEngine.main.Game;
 import com.hybrid.rEngine.math.Vector2;
+import com.hybrid.rEngine.math.Vector2Int;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -26,6 +24,9 @@ public class Player extends Entity implements Updatable {
 
         Renderer renderer = new Renderer(transform, "tank_green.png", 10);
         addComponent(renderer);
+
+        RectCollider rectCollider = new RectCollider(transform, new Vector2Int(64, 64));
+        addComponent(rectCollider);
 
         game.registerUpdatable(this);
         game.registerEntity(this);

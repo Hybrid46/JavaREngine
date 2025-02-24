@@ -28,6 +28,14 @@ public class Transform extends Component {
         return position;
     }
 
+    public float getX(){
+        return getPosition().x;
+    }
+
+    public float getY(){
+        return getPosition().y;
+    }
+
     public void setPosition(Vector2 position) {
         lastPosition = new Vector2(this.position.x, this.position.y);
         this.position = position;
