@@ -36,7 +36,7 @@ public class RectCollider extends Component implements Updatable, Collider {
         updateRectanglePosition();
     }
 
-    public boolean isStatic(){
+    public boolean isStatic() {
         return m_boundTransform.isStatic();
     }
 
@@ -61,27 +61,28 @@ public class RectCollider extends Component implements Updatable, Collider {
     }
 
     public void resolveCollision(RectCollider other) {
-        if (isOverlapping(other.rectangle)) {
-            // Calculate overlap distances on both axes
-            int deltaX = (rectangle.x + rectangle.width / 2) - (other.rectangle.x + other.rectangle.width / 2);
-            int deltaY = (rectangle.y + rectangle.height / 2) - (other.rectangle.y + other.rectangle.height / 2);
-            int overlapX = (rectangle.width / 2 + other.rectangle.width / 2) - Math.abs(deltaX);
-            int overlapY = (rectangle.height / 2 + other.rectangle.height / 2) - Math.abs(deltaY);
+        if (m_boundTransform.isStatic()) return;
+        if (!isOverlapping(other.rectangle)) return;
 
-            if (overlapX > 0 && overlapY > 0) {
-                // Resolve along the axis of least penetration
-                if (overlapX < overlapY) {
-                    if (deltaX > 0) {
-                        m_boundTransform.setX(m_boundTransform.getX() + overlapX);
-                    } else {
-                        m_boundTransform.setX(m_boundTransform.getX() - overlapX);
-                    }
+        // Calculate overlap distances on both axes
+        int deltaX = (rectangle.x + rectangle.width / 2) - (other.rectangle.x + other.rectangle.width / 2);
+        int deltaY = (rectangle.y + rectangle.height / 2) - (other.rectangle.y + other.rectangle.height / 2);
+        int overlapX = (rectangle.width / 2 + other.rectangle.width / 2) - Math.abs(deltaX);
+        int overlapY = (rectangle.height / 2 + other.rectangle.height / 2) - Math.abs(deltaY);
+
+        if (overlapX > 0 && overlapY > 0) {
+            // Resolve along the axis of least penetration
+            if (overlapX < overlapY) {
+                if (deltaX > 0) {
+                    m_boundTransform.setX(m_boundTransform.getX() + overlapX);
                 } else {
-                    if (deltaY > 0) {
-                        m_boundTransform.setY(m_boundTransform.getY() + overlapY);
-                    } else {
-                        m_boundTransform.setY(m_boundTransform.getY() - overlapY);
-                    }
+                    m_boundTransform.setX(m_boundTransform.getX() - overlapX);
+                }
+            } else {
+                if (deltaY > 0) {
+                    m_boundTransform.setY(m_boundTransform.getY() + overlapY);
+                } else {
+                    m_boundTransform.setY(m_boundTransform.getY() - overlapY);
                 }
             }
         }
