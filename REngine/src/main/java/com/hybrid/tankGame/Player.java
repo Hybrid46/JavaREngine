@@ -21,7 +21,7 @@ public class Player extends Entity implements Updatable {
         super(game);
 
         Transform transform = getTransform();
-        transform.setPosition(new Vector2(100, 100));
+        transform.setPosition(new Vector2(100.0f, 100.0f));
         addComponent(transform);
 
         Renderer renderer = new Renderer(transform, "tank_green.png", 10);
@@ -33,7 +33,12 @@ public class Player extends Entity implements Updatable {
 
     public void update() {
         Transform transform = getTransform();
-        transform.addPosition(transform.getForward().multiply(updatePos().y));
+
+        Vector2 currentPos = transform.getPosition();
+        Vector2 velocity = transform.getForward().multiply(updatePos().y);
+        Vector2 positionAndVelocity = currentPos.add(velocity);
+
+        transform.setPosition(positionAndVelocity);
         transform.addRotation(updatePos().x);
 
         setUp(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_W));

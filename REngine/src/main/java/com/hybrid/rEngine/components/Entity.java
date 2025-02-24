@@ -16,7 +16,7 @@ public class Entity {
 
     public Entity(Game game) {
         this.game = game;
-        my_transform = new Transform();
+        my_transform = new Transform(this);
         addComponent(my_transform);
     }
 

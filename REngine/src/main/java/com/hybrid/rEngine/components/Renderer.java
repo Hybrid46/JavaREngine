@@ -30,13 +30,14 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
         this.layer = layer;
     }
 
-    public Renderer(Transform boundTransform, String spriteFileName, Vector2Int offset, Vector2Int size) {
+    public Renderer(Transform boundTransform, String spriteFileName, Vector2Int offset, Vector2Int size, int layer) {
         this.m_boundTransform = boundTransform;
         this.spriteFileName = spriteFileName;
         loadImage();
         this.size = size;
         this.offset = offset;
         boundingBox = new Rectangle(size.x, size.y);
+        this.layer = layer;
     }
 
     public Rectangle getBoundingBox() {

@@ -19,21 +19,16 @@ public class RectCollider extends Component implements Updatable {
         this.size = size;
         this.offset = offset;
         rectangle = new Rectangle();
-        updateRectangleSize();
+        rectangle.setSize(size.x, size.y);
         this.m_boundTransform = boundTransform;
     }
 
-    public RectCollider(Transform boundTransform) {
-        this.size = boundTransform.getScale().getVector2Int();
-        this.offset = new Vector2Int();
-        rectangle = new Rectangle();
-        updateRectangleSize();
-        this.m_boundTransform = boundTransform;
-    }
-
-    public void setSize(Vector2Int size) {
+    public RectCollider(Transform boundTransform, Vector2Int size) {
         this.size = size;
-        updateRectangleSize();
+        this.offset = new Vector2Int(0, 0);
+        rectangle = new Rectangle();
+        rectangle.setSize(size.x, size.y);
+        this.m_boundTransform = boundTransform;
     }
 
     @Override
@@ -53,20 +48,72 @@ public class RectCollider extends Component implements Updatable {
         rectangle.setLocation(getCenterPosition().toPoint());
     }
 
-    private void updateRectangleSize() {
-        rectangle.setSize(size.x, size.y);
+    private Vector2Int getCenterPosition() {
+        return Transformations.getCenterPositionWithOffsetSize(
+                m_boundTransform.getPosition().getVector2Int(),
+                offset,
+                size
+        );
     }
 
-    private Vector2Int getCenterPosition() {
-        return Transformations.getCenterPositionWithOffsetSize(m_boundTransform.getPosition().getVector2Int(), offset, size);
+    public void resolveCollision(RectCollider other) {
+        if (isOverlapping(other.rectangle)) {
+            // Calculate overlap
+            int overlapWidth = (rectangle.width + other.rectangle.width - Math.abs(rectangle.x - other.rectangle.x));
+            int overlapHeight = (rectangle.height + other.rectangle.height - Math.abs(rectangle.y - other.rectangle.y));
 
-//        Vector2Int halfSize = new Vector2Int(
-//                Math.max(1, rectangle.width / 2),
-//                Math.max(1, rectangle.height / 2));
-//        
-//        Vector2Int center = m_boundTransform.getRoundedPosition().subtract(halfSize);
-//        center.add(offset);
-//        
-//        return center;
+            // If there's overlap, adjust positions to resolve collision
+            if (overlapWidth > 0 && overlapHeight > 0) {
+                // Calculate the direction of movement
+                Vector2Int thisVelocity = m_boundTransform.getVelocity().getVector2Int();
+                Vector2Int otherVelocity = other.m_boundTransform.getVelocity().getVector2Int();
+
+                // Stop overlapping objects
+                if (thisVelocity.x * (rectangle.x - other.rectangle.x) + thisVelocity.y * (rectangle.y - other.rectangle.y) < 0) {
+                    m_boundTransform.setX(rectangle.x - overlapWidth);
+                } else {
+                    m_boundTransform.setX(other.rectangle.x + other.rectangle.width);
+                }
+
+                if (thisVelocity.x * (rectangle.x - other.rectangle.x) + thisVelocity.y * (rectangle.y - other.rectangle.y) > 0) {
+                    m_boundTransform.setY(other.rectangle.y + other.rectangle.height);
+                } else {
+                    m_boundTransform.setY(rectangle.y - overlapHeight);
+                }
+            }
+        }
+    }
+
+    public void resolveCollision(Vector2Int circleCenter, float circleRadius) {
+        // Calculate the distance between centers
+        Vector2Int diff = new Vector2Int(
+                (int) (circleCenter.x - getCenterPosition().x),
+                (int) (circleCenter.y - getCenterPosition().y)
+        );
+
+        float distanceSquared = (float) (Math.pow(diff.x, 2) + Math.pow(diff.y, 2));
+
+        // Calculate half-diagonal of the rectangle
+        int halfDiagonal = (int) Math.sqrt((size.x / 2.0 * size.x / 2.0) +
+                (size.y / 2.0 * size.y / 2.0));
+
+        if (distanceSquared <= circleRadius * circleRadius + halfDiagonal) {
+            // Resolve collision by adjusting the rectangle's position
+            float overlap = (float) (circleRadius - Math.sqrt(distanceSquared));
+            Vector2Int direction = new Vector2Int(diff.x, diff.y);
+            direction.normalize();
+
+            if (direction.x > 0) {
+                m_boundTransform.setX(getCenterPosition().x + halfDiagonal);
+            } else {
+                m_boundTransform.setX(getCenterPosition().x - halfDiagonal);
+            }
+
+            if (direction.y > 0) {
+                m_boundTransform.setY(getCenterPosition().y + halfDiagonal);
+            } else {
+                m_boundTransform.setY(getCenterPosition().y - halfDiagonal);
+            }
+        }
     }
 }

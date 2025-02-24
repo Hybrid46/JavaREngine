@@ -5,20 +5,18 @@ import com.hybrid.rEngine.utils.Transformations;
 
 public class Transform extends Component {
 
+    private final Entity entity;
     private Vector2 position;
+    private Vector2 lastPosition;
     private float rotation; // In degrees
     private Vector2 scale;
+    private Vector2 velocity;
 
-    public Transform() {
+    public Transform(Entity entity) {
         this.position = Vector2.zero();
         this.rotation = 0;
         this.scale = Vector2.one();
-    }
-
-    public Transform(Vector2 position, float rotation, Vector2 scale) {
-        this.position = position;
-        this.rotation = rotation;
-        this.scale = scale;
+        this.entity = entity;
     }
 
     public void setActive() {
@@ -31,21 +29,17 @@ public class Transform extends Component {
     }
 
     public void setPosition(Vector2 position) {
+        lastPosition = new Vector2(this.position.x, this.position.y);
         this.position = position;
+        velocity = new Vector2(position.x - lastPosition.x, position.y - lastPosition.y);
     }
 
-    public void setPosition(float x, float y) {
-        this.position.x = x;
-        this.position.y = y;
+    public void setX(float x) {
+        setPosition(new Vector2(x, position.y));
     }
 
-    public void addPosition(Vector2 position) {
-        this.position.add(position);
-    }
-
-    public void addPosition(float x, float y) {
-        this.position.x += x;
-        this.position.y += y;
+    public void setY(float y) {
+        setPosition(new Vector2(position.x, y));
     }
 
     public float getRotation() {
@@ -90,8 +84,23 @@ public class Transform extends Component {
         return Transformations.getDirection(rotation + 180);
     }
 
+    public boolean isStatic() {
+        return entity.isStatic();
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
+    }
+
     @Override
     public String toString() {
-        return "Transform{" + "position=" + position + ", rotation=" + rotation + ", scale=" + scale + '}';
+        return "Transform{" +
+                "position=" + position +
+                ", lastPosition=" + lastPosition +
+                ", rotation=" + rotation +
+                ", scale=" + scale +
+                ", entity=" + entity +
+                ", velocity=" + velocity +
+                '}';
     }
 }
