@@ -56,8 +56,8 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
 
     @Override
     public void render(Graphics2D g2d) {
-        drawBoundingBox(g2d);
         drawImage(g2d);
+        drawBoundingBox(g2d);
     }
 
     public Vector2Int getSize() {
