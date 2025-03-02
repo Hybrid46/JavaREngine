@@ -28,6 +28,7 @@ public class Game implements Runnable {
     private final HashSet<Entity> entities = new HashSet<>();
     private Thread gameThread;
     private Player player;
+    private CameraManager cameraManager;
 
     public Game() {
         start();
@@ -52,6 +53,7 @@ public class Game implements Runnable {
         levelGenerator.generateLevel(this);
 
         player = new Player(this);
+        cameraManager = new CameraManager(this);
     }
 
     private void update() {
@@ -100,6 +102,8 @@ public class Game implements Runnable {
                 renderer.render(g2d);
             }
         }
+
+        cameraManager.drawBoundingBox(g2d);
     }
 
     @Override
