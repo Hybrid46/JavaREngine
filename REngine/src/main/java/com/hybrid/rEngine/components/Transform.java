@@ -3,7 +3,7 @@ package com.hybrid.rEngine.components;
 import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.utils.Transformations;
 
-public class Transform extends Component {
+public class Transform extends Component implements Updatable {
 
     private final Entity entity;
     private Vector2 position;
@@ -110,5 +110,10 @@ public class Transform extends Component {
                 ", entity=" + entity +
                 ", velocity=" + velocity +
                 '}';
+    }
+
+    @Override
+    public void update() {
+        entity.getTransform().setPosition( entity.getGame().getCameraManager().getCamera().worldToScreen(entity.getTransform().getPosition()));
     }
 }

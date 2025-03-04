@@ -1,9 +1,9 @@
 package com.hybrid.rEngine.main;
 
 import com.hybrid.rEngine.components.Camera;
+import com.hybrid.rEngine.components.Entity;
 import com.hybrid.rEngine.components.Transform;
 import com.hybrid.rEngine.components.Updatable;
-import com.hybrid.rEngine.components.Entity;
 import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.math.Vector2Int;
 import com.hybrid.rEngine.utils.Transformations;
@@ -13,10 +13,10 @@ import java.awt.event.KeyEvent;
 
 public class CameraManager extends Entity implements Updatable {
 
+    private final Vector2Int drawRange = new Vector2Int(128, 128);
     private Camera camera;
     private float cameraSpeed = 4;
     private Rectangle boundingBox;
-    private final Vector2Int drawRange = new Vector2Int(128,128);
 
     public CameraManager(Game game) {
         super(game);
@@ -37,7 +37,7 @@ public class CameraManager extends Entity implements Updatable {
         if (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_LEFT)) addPosition.x -= cameraSpeed;
 
         Transform transform = getTransform();
-        transform.setPosition( transform.getPosition().add(addPosition));
+        transform.setPosition(transform.getPosition().add(addPosition));
 
         updateBoundingBoxPosition();
     }
@@ -50,5 +50,9 @@ public class CameraManager extends Entity implements Updatable {
     public void drawBoundingBox(Graphics2D g2d) {
         g2d.setColor(Color.RED);
         g2d.drawRect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 }
