@@ -16,6 +16,7 @@ public class Parent extends Component implements Updatable{
 
     @Override
     public void update() {
+        if (children.isEmpty()) return;
         for (Transform child : children) child.setPosition(parentTransform.getPosition());
     }
 

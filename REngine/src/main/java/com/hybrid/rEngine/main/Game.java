@@ -55,7 +55,6 @@ public class Game implements Runnable {
     private void update() {
         colliders.clear();
 
-
         for (Updatable updatable : updatables) {
             updatable.update();
             if (updatable instanceof Collider) colliders.add((Collider)updatable);

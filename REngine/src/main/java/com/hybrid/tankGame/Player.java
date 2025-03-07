@@ -20,7 +20,6 @@ public class Player extends Entity implements Updatable {
 
         Transform transform = getTransform();
         transform.setPosition(new Vector2(100.0f, 100.0f));
-        addComponent(transform);
 
         Renderer renderer = new Renderer(transform, "tank_green.png", 10);
         addComponent(renderer);
