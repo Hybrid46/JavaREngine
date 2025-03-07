@@ -3,7 +3,7 @@ package com.hybrid.rEngine.components;
 import com.hybrid.rEngine.math.Matrix3x3;
 import com.hybrid.rEngine.math.Vector2;
 
-public class Camera extends Component implements Updatable {
+public class Camera extends Component {
 
     private final Transform m_transform;
 
@@ -11,9 +11,15 @@ public class Camera extends Component implements Updatable {
         m_transform = transform;
     }
 
+    //TODO not working perfectly
     public void setZoom(float factor) {
         float zoom = Math.max(0.1f, factor);
         m_transform.setScale(zoom, zoom);
+    }
+
+    //TODO test
+    public void setRotation(float rotation) {
+        m_transform.setRotation(rotation);
     }
 
     public Matrix3x3 getViewMatrix() {
@@ -31,10 +37,5 @@ public class Camera extends Component implements Updatable {
     public Vector2 screenToWorld(Vector2 vector) {
         Matrix3x3 inverse = getViewMatrix();
         return inverse.transformPoint(vector);
-    }
-
-    @Override
-    public void update() {
-        //bounds rect update
     }
 }
