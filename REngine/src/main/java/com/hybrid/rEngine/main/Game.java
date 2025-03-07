@@ -99,7 +99,7 @@ public class Game implements Runnable {
 
         for (int layer : layeredRenderUpdatables.keySet()) {
             for (RenderUpdatable renderer : layeredRenderUpdatables.get(layer)) {
-                renderer.render(g2d);
+                renderer.render(g2d, cameraManager);
             }
         }
 

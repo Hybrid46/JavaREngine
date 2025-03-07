@@ -1,5 +1,7 @@
 package com.hybrid.rEngine.components;
 
+import com.hybrid.rEngine.main.CameraManager;
+import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.math.Vector2Int;
 import com.hybrid.rEngine.utils.LoadSave;
 import com.hybrid.rEngine.utils.Transformations;
@@ -7,7 +9,7 @@ import com.hybrid.rEngine.utils.Transformations;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Renderer extends Component implements Updatable, RenderUpdatable {
+public class Renderer extends Component implements RenderUpdatable {
 
     private BufferedImage image;
     private String spriteFileName;
@@ -16,6 +18,7 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
     private Vector2Int offset;
     private Vector2Int size;
     private int layer;
+    private Vector2 worldToCamera;
 
     private Renderer() {
     }
@@ -50,12 +53,11 @@ public class Renderer extends Component implements Updatable, RenderUpdatable {
     }
 
     @Override
-    public void update() {
-        updateBoundingBoxPosition();
-    }
+    public void render(Graphics2D g2d, CameraManager cameraManager) {
 
-    @Override
-    public void render(Graphics2D g2d) {
+        updateBoundingBoxPosition();
+        worldToCamera = cameraManager.getCamera().worldToScreen(new Vector2(boundingBox.x, boundingBox.y));
+        boundingBox.setLocation((int)worldToCamera.x, (int)worldToCamera.y);
         drawImage(g2d);
         drawBoundingBox(g2d);
     }

@@ -1,5 +1,6 @@
 package com.hybrid.rEngine.components;
 
+import com.hybrid.rEngine.main.CameraManager;
 import com.hybrid.rEngine.math.Vector2Int;
 import com.hybrid.rEngine.utils.LoadSave;
 
@@ -44,7 +45,7 @@ public class Animator extends Component implements Updatable, RenderUpdatable {
     }
 
     @Override
-    public void render(Graphics2D g2d) {
+    public void render(Graphics2D g2d, CameraManager cameraManager) {
         updateAnimation();
         drawAnimation(g2d);
     }
