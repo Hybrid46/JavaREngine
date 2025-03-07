@@ -18,7 +18,6 @@ public class Renderer extends Component implements RenderUpdatable {
     private Vector2Int offset;
     private Vector2Int size;
     private int layer;
-    private Vector2 worldToCamera;
 
     private Renderer() {
     }
@@ -56,8 +55,8 @@ public class Renderer extends Component implements RenderUpdatable {
     public void render(Graphics2D g2d, CameraManager cameraManager) {
 
         updateBoundingBoxPosition();
-        worldToCamera = cameraManager.getCamera().worldToScreen(new Vector2(boundingBox.x, boundingBox.y));
-        boundingBox.setLocation((int)worldToCamera.x, (int)worldToCamera.y);
+        Vector2 worldToCamera = cameraManager.getCamera().worldToScreen(new Vector2(boundingBox.x, boundingBox.y));
+        boundingBox.setLocation(worldToCamera.toPoint());
         drawImage(g2d);
         drawBoundingBox(g2d);
     }
