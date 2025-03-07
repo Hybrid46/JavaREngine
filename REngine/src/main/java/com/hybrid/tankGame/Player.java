@@ -90,13 +90,6 @@ public class Player extends Entity implements Updatable {
         attacking = false;
     }
 
-    public void resetDirBooleans() {
-        left = false;
-        right = false;
-        up = false;
-        down = false;
-    }
-
     public void setAttacking(boolean attacking) {
         this.attacking = attacking;
     }

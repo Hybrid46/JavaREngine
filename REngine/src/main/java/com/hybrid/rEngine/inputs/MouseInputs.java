@@ -33,6 +33,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener, Updatabl
         this.gamePanel = gamePanel;
     }
 
+    public void reset(){
+        pressedButtons.clear();
+    }
+
     @Override
     public void mousePressed(MouseEvent e) {
         int button = e.getButton();

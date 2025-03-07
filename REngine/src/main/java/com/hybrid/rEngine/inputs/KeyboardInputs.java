@@ -24,6 +24,10 @@ public class KeyboardInputs implements KeyListener, Updatable {
 
     }
 
+    public void reset(){
+        pressedKeys.clear();
+    }
+
     public void update() {
         // Called once per game tick to handle state transitions
         changedKeys.clear();

@@ -4,8 +4,6 @@ import com.hybrid.rEngine.components.*;
 import com.hybrid.rEngine.inputs.KeyboardInputs;
 import com.hybrid.rEngine.inputs.MouseInputs;
 import com.hybrid.rEngine.utils.ScreenUtils;
-import com.hybrid.tankGame.LevelGenerator;
-import com.hybrid.tankGame.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -27,8 +25,8 @@ public class Game implements Runnable {
     private final ArrayList<Collider> colliders = new ArrayList<>();
     private final HashSet<Entity> entities = new HashSet<>();
     private Thread gameThread;
-    private Player player;
     private CameraManager cameraManager;
+    private GameBridge gameBridge;
 
     public Game() {
         start();
@@ -49,15 +47,14 @@ public class Game implements Runnable {
     }
 
     private void start() {
-        LevelGenerator levelGenerator = new LevelGenerator();
-        levelGenerator.generateLevel(this);
-
-        player = new Player(this);
+        gameBridge = new GameBridge(this);
+        gameBridge.startGame();
         cameraManager = new CameraManager(this);
     }
 
     private void update() {
         colliders.clear();
+
 
         for (Updatable updatable : updatables) {
             updatable.update();
@@ -67,6 +64,8 @@ public class Game implements Runnable {
         mouseInput.update();
 
         updateCollisions();
+
+        gameBridge.updateGame();
     }
 
     private void updateCollisions(){
@@ -197,7 +196,11 @@ public class Game implements Runnable {
     }
 
     public void windowFocusLost() {
-        player.resetDirBooleans();
+        gameBridge.windowFocusLost();
+    }
+
+    public void windowFocusGained() {
+        gameBridge.windowFocusGained();
     }
 
     public void registerEntity(Entity entity) {
@@ -206,10 +209,6 @@ public class Game implements Runnable {
 
     public void unregisterEntity(Entity entity) {
         entities.remove(entity);
-    }
-
-    public Player getPlayer() {
-        return player;
     }
 
     public CameraManager getCameraManager(){
