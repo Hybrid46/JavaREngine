@@ -2,6 +2,7 @@ package com.hybrid.rEngine.main;
 
 import com.hybrid.tankGame.LevelGenerator;
 import com.hybrid.tankGame.Player;
+import com.hybrid.tankGame.Turret;
 
 //Special class to make a bridge between the Engine and Game
 //Parent class for all Game variable and handles all the logic
@@ -9,6 +10,7 @@ public class GameBridge {
 
     private Game game;
     private Player player;
+    private Turret playerTurret;
 
     private GameBridge() {
     }

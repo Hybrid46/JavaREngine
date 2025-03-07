@@ -14,6 +14,7 @@ public class Player extends Entity implements Updatable {
     private final float playerRotationSpeed = 0.5f;
     private boolean moving = false, attacking = false;
     private boolean left, up, right, down;
+    private Turret turret;
 
     public Player(Game game) {
         super(game);
@@ -21,11 +22,17 @@ public class Player extends Entity implements Updatable {
         Transform transform = getTransform();
         transform.setPosition(new Vector2(100.0f, 100.0f));
 
-        Renderer renderer = new Renderer(transform, "tank_green.png", 10);
+        Renderer renderer = new Renderer(transform, "tank_green_body.png", 10);
         addComponent(renderer);
 
         RectCollider rectCollider = new RectCollider(transform, new Vector2Int(64, 64));
         addComponent(rectCollider);
+
+        turret = new Turret(game);
+        Parent parent =new Parent(getTransform());
+        parent.addChild(turret.getTransform());
+        addComponent(parent);
+        game.registerUpdatable(parent);
 
         game.registerUpdatable(this);
         game.registerEntity(this);
