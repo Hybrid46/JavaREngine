@@ -3,6 +3,7 @@ package com.hybrid.rEngine.main;
 import com.hybrid.rEngine.components.*;
 import com.hybrid.rEngine.inputs.KeyboardInputs;
 import com.hybrid.rEngine.inputs.MouseInputs;
+import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.utils.ScreenUtils;
 
 import java.awt.*;
@@ -25,12 +26,10 @@ public class Game implements Runnable {
     private final ArrayList<Collider> colliders = new ArrayList<>();
     private final HashSet<Entity> entities = new HashSet<>();
     private Thread gameThread;
-    private CameraManager cameraManager;
-    private GameBridge gameBridge;
+    private final CameraManager cameraManager;
+    private final GameBridge gameBridge;
 
     public Game() {
-        start();
-
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel, false);
         gamePanel.requestFocus();
@@ -38,18 +37,16 @@ public class Game implements Runnable {
         keyboardInput = gamePanel.getKeyboardInputs();
         mouseInput = gamePanel.getMouseInputs();
 
+        cameraManager = new CameraManager(this);
+        gameBridge = new GameBridge(this);
+        gameBridge.startGame();
+
         startGameLoop();
     }
 
     private void startGameLoop() {
         gameThread = new Thread(this);
         gameThread.start();
-    }
-
-    private void start() {
-        gameBridge = new GameBridge(this);
-        gameBridge.startGame();
-        cameraManager = new CameraManager(this);
     }
 
     private void update() {
@@ -212,5 +209,9 @@ public class Game implements Runnable {
 
     public CameraManager getCameraManager(){
         return cameraManager;
+    }
+
+    public Vector2 getWindowSize(){
+        return gameWindow.getWindowSize();
     }
 }
