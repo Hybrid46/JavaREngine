@@ -1,5 +1,7 @@
 package com.hybrid.rEngine.main;
 
+import com.hybrid.rEngine.math.Vector2;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -40,6 +42,10 @@ public class GameWindow {
             }
         });
 
+    }
+
+    public Vector2 getWindowSize(){
+        return new Vector2(jframe.getWidth(), jframe.getHeight());
     }
 
 }

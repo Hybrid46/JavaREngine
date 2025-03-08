@@ -7,7 +7,6 @@ public class Vector2 {
     public float x;
     public float y;
 
-    // Constructors
     public Vector2() {
         this.x = 0;
         this.y = 0;
@@ -37,47 +36,23 @@ public class Vector2 {
 
     // Basic operations
     public Vector2 add(Vector2 other) {
-        this.x += other.x;
-        this.y += other.y;
-        return this;
+        return new Vector2(x + other.x, y + other.y);
     }
 
     public Vector2 subtract(Vector2 other) {
-        this.x -= other.x;
-        this.y -= other.y;
-        return this;
-    }
-
-    public Vector2 scale(float scalar) {
-        this.x *= scalar;
-        this.y *= scalar;
-        return this;
+        return new Vector2(x - other.x, y - other.y);
     }
 
     public Vector2 multiply(Vector2 other) {
-        this.x *= other.x;
-        this.y *= other.y;
-        return this;
+        return new Vector2(this.x *= other.x, this.y *= other.y);
     }
 
     public Vector2 multiply(float scalar) {
-        this.x *= scalar;
-        this.y *= scalar;
-        return this;
+        return new Vector2(this.x *= scalar, this.y *= scalar);
     }
 
     public Vector2 divide(float scalar) {
-        if (scalar != 0) {
-            this.x /= scalar;
-            this.y /= scalar;
-        }
-        return this;
-    }
-
-    public Vector2 oneDivide() {
-        this.x = 1f / this.x;
-        this.y = 1 / this.y;
-        return this;
+        return new Vector2(this.x /= scalar, this.y /= scalar);
     }
 
     public Vector2Int getVector2Int() {
@@ -106,14 +81,16 @@ public class Vector2 {
         return this;
     }
 
-    public Vector2 negate() {
-        this.x *= -1f;
-        this.y *= -1f;
-        return this;
+    public Vector2 normlaized(){
+        return new Vector2(this.x, this.y).normalize();
     }
 
     public float distanceTo(Vector2 other) {
         return (float) Math.sqrt((other.x - this.x) * (other.x - this.x) + (other.y - this.y) * (other.y - this.y));
+    }
+
+    public Vector2 directionTo(Vector2 other){
+        return  new Vector2(other.x - this.x, other.y - this.y).normalize();
     }
 
     // Dot product
@@ -132,17 +109,15 @@ public class Vector2 {
         return new Vector2((float) Math.cos(rad), (float) Math.sin(rad));
     }
 
-    public Vector2 rotate(float degrees) {
-        float radians = (float) Math.toRadians(degrees);
+    public Vector2 rotate(float angle) {
+        float radians = (float) Math.toRadians(angle);
         float cos = (float) Math.cos(radians);
         float sin = (float) Math.sin(radians);
 
         float newX = this.x * cos - this.y * sin;
         float newY = this.x * sin + this.y * cos;
 
-        this.x = newX;
-        this.y = newY;
-        return this;
+        return new Vector2(newX, newY);
     }
 
     // Get the angle (in degrees) between this vector and another vector

@@ -23,7 +23,6 @@ public class Turret extends Entity implements Updatable {
 
     private void turnToMouse() {
         Vector2 mousePosition = getGame().mouseInput.getMousePosition();
-        //if (mousePosition.x == 0 && mousePosition.y == 0) return;
         Vector2 screenPosition = getGame().getCameraManager().getCamera().worldToScreen(getTransform().getPosition());
         Vector2 directionToMouse = mousePosition.subtract(screenPosition);
         directionToMouse.normalize();

@@ -24,6 +24,7 @@ public class GameBridge {
         levelGenerator.generateLevel(game);
 
         player = new Player(game);
+        game.getCameraManager().setFollowEntity(player);
 
         System.out.println("Game started...");
     }
