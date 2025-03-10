@@ -34,6 +34,12 @@ public class Vector2 {
         return new Vector2(1, 0);
     }
 
+    // Convert angle (in degrees) to vector
+    public static Vector2 angleToVector(float angle) {
+        float rad = (float) Math.toRadians(angle);
+        return new Vector2((float) Math.cos(rad), (float) Math.sin(rad));
+    }
+
     // Basic operations
     public Vector2 add(Vector2 other) {
         return new Vector2(x + other.x, y + other.y);
@@ -81,7 +87,11 @@ public class Vector2 {
         return this;
     }
 
-    public Vector2 normlaized(){
+    public Vector2 round() {
+        return new Vector2(Math.round(this.x), Math.round(this.y));
+    }
+
+    public Vector2 normlaized() {
         return new Vector2(this.x, this.y).normalize();
     }
 
@@ -89,8 +99,8 @@ public class Vector2 {
         return (float) Math.sqrt((other.x - this.x) * (other.x - this.x) + (other.y - this.y) * (other.y - this.y));
     }
 
-    public Vector2 directionTo(Vector2 other){
-        return  new Vector2(other.x - this.x, other.y - this.y).normalize();
+    public Vector2 directionTo(Vector2 other) {
+        return new Vector2(other.x - this.x, other.y - this.y).normalize();
     }
 
     // Dot product
@@ -101,12 +111,6 @@ public class Vector2 {
     // Convert vector to angle (in degrees)
     public float toAngle() {
         return (float) Math.toDegrees(Math.atan2(this.y, this.x));
-    }
-
-    // Convert angle (in degrees) to vector
-    public static Vector2 angleToVector2(float angle) {
-        float rad = (float) Math.toRadians(angle);
-        return new Vector2((float) Math.cos(rad), (float) Math.sin(rad));
     }
 
     public Vector2 rotate(float angle) {

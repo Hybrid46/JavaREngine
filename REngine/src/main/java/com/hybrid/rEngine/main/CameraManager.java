@@ -27,6 +27,7 @@ public class CameraManager extends Entity implements Updatable {
         camera = new Camera(this.getTransform());
         Vector2 windowSize = game.getWindowSize();
         screenCenter = windowSize.divide(2f);
+        screenCenter = screenCenter.round();
         getTransform().setPosition(screenCenter);
         boundingBox = new Rectangle(drawRange.x, drawRange.y);
 
@@ -37,7 +38,9 @@ public class CameraManager extends Entity implements Updatable {
     @Override
     public void update() {
         if (followEntity != null){
-            this.getTransform().setPosition(followEntity.getTransform().getPosition().subtract(screenCenter));
+            Vector2 followPosition = followEntity.getTransform().getPosition();
+            this.getTransform().setPosition(followPosition.subtract(screenCenter));
+
         }
         else {
             Vector2 addPosition = new Vector2();
