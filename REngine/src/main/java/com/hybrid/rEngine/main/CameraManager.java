@@ -32,7 +32,6 @@ public class CameraManager extends Entity implements Updatable {
         boundingBox = new Rectangle(drawRange.x, drawRange.y);
 
         game.registerUpdatable(this);
-        game.registerEntity(this);
     }
 
     @Override
@@ -40,7 +39,6 @@ public class CameraManager extends Entity implements Updatable {
         if (followEntity != null){
             Vector2 followPosition = followEntity.getTransform().getPosition();
             this.getTransform().setPosition(followPosition.subtract(screenCenter));
-
         }
         else {
             Vector2 addPosition = new Vector2();
