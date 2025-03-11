@@ -61,9 +61,11 @@ public class Entity {
 
         if (component instanceof Updatable updatable) {
             game.registerUpdatable(updatable);
+            //System.out.println("Registered as Updatable: " + component.getClass().getSimpleName());
         }
         if (component instanceof RenderUpdatable renderUpdatable) {
             game.registerRenderUpdatable(renderUpdatable);
+            //System.out.println("Registered as RenderUpdatable: " + component.getClass().getSimpleName());
         }
 
         components.put(component.getClass(), component);
@@ -111,5 +113,19 @@ public class Entity {
 
     public Game getGame() {
         return game;
+    }
+
+    public void Destroy() {
+//        System.out.println("Destroying" + this.getUpdatables().size() + "Updatables");
+//        System.out.println("Destroying" + this.getRenderUpdatables().size() + "RenderUpdatables");
+//        System.out.println("Destroying" + this.getClass().getSimpleName() + "Entity");
+
+        for(Updatable upd : this.getUpdatables()) {
+            game.unregisterUpdatable(upd);
+        }
+        for(RenderUpdatable upd : this.getRenderUpdatables()) {
+            game.unregisterRenderUpdatable(upd);
+        }
+        game.unregisterEntity(this);
     }
 }

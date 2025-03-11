@@ -39,8 +39,8 @@ public class Bullet extends Entity implements Updatable {
         for (Collider other : collider.getOthers()) {
             if (other instanceof RectCollider) {
                 Entity otherEntity = ((RectCollider) other).getParentEntity();
-                //otherEntity.Destroy();
-                //Destroy();
+                otherEntity.Destroy();
+                Destroy();
             }
 
             //other collider types...

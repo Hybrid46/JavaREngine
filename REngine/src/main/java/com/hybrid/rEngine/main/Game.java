@@ -52,7 +52,6 @@ public class Game implements Runnable {
     }
 
     private void update() {
-        colliders.clear();
 
         while (!addUpdatables.isEmpty()) updatables.add(addUpdatables.pop());
         while (!removeUpdatables.isEmpty()) updatables.remove(removeUpdatables.pop());
@@ -69,6 +68,7 @@ public class Game implements Runnable {
         mouseInput.update();
 
         updateCollisions();
+        colliders.clear();
 
         gameBridge.updateGame();
     }
@@ -174,7 +174,7 @@ public class Game implements Runnable {
     }
 
     public void unregisterUpdatable(Updatable updatable) {
-        removeUpdatables.remove(updatable);
+        removeUpdatables.add(updatable);
     }
 
     public void registerRenderUpdatable(RenderUpdatable updatable) {
@@ -182,7 +182,7 @@ public class Game implements Runnable {
     }
 
     public void unregisterRenderUpdatable(RenderUpdatable updatable) {
-        removeRenderUpdatables.remove(updatable);
+        removeRenderUpdatables.add(updatable);
     }
 
     public void windowFocusLost() {
