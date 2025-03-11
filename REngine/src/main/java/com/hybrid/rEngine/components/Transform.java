@@ -88,10 +88,6 @@ public class Transform extends Component {
         return Transformations.getDirection(rotation + 90);
     }
 
-    public Vector2 getRight() {
-        return Transformations.getDirection(rotation + 180);
-    }
-
     public boolean isStatic() {
         return entity.isStatic();
     }
@@ -110,5 +106,9 @@ public class Transform extends Component {
                 ", entity=" + entity +
                 ", velocity=" + velocity +
                 '}';
+    }
+
+    public Entity getParentEntity(){
+        return entity;
     }
 }

@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class LevelGenerator {
 
-    private final int MAP_SIZE = 10;
+    private final int MAP_SIZE = 20;
     private final int TILE_SIZE = 64;
 
     public final boolean[][] pathMap = new boolean[MAP_SIZE][MAP_SIZE];

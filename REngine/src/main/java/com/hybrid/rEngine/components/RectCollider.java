@@ -4,6 +4,7 @@ import com.hybrid.rEngine.math.Vector2Int;
 import com.hybrid.rEngine.utils.Transformations;
 
 import java.awt.*;
+import java.util.HashSet;
 
 public class RectCollider extends Component implements Updatable, Collider {
 
@@ -11,6 +12,7 @@ public class RectCollider extends Component implements Updatable, Collider {
     private Transform m_boundTransform;
     private Vector2Int size;
     private Vector2Int offset;
+    private final HashSet<Collider> others = new HashSet<>();
 
     private RectCollider() {
     }
@@ -63,6 +65,9 @@ public class RectCollider extends Component implements Updatable, Collider {
     public void resolveCollision(RectCollider other) {
         if (m_boundTransform.isStatic()) return;
         if (!isOverlapping(other.rectangle)) return;
+
+        others.add(other);
+        //for (Collider coll : others) System.out.println(this.getClass() + " collided with " + coll.getClass());
 
         // Calculate overlap distances on both axes
         int deltaX = (rectangle.x + rectangle.width / 2) - (other.rectangle.x + other.rectangle.width / 2);
@@ -119,5 +124,17 @@ public class RectCollider extends Component implements Updatable, Collider {
                 m_boundTransform.setY(getCenterPosition().y - halfDiagonal);
             }
         }
+    }
+
+    public void clearOthers(){
+        others.clear();
+    }
+
+    public HashSet<Collider> getOthers(){
+        return others;
+    }
+
+    public Entity getParentEntity(){
+        return m_boundTransform.getParentEntity();
     }
 }

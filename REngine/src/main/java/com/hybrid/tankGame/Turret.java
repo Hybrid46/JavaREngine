@@ -4,8 +4,11 @@ import com.hybrid.rEngine.components.*;
 import com.hybrid.rEngine.main.Game;
 import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.utils.Transformations;
+import static com.hybrid.rEngine.math.MathUtils.lerp;
 
 public class Turret extends Entity implements Updatable {
+
+    private final float turnSpeed = 0.5f;
 
     public Turret(Game game) {
         super(game);
@@ -21,11 +24,27 @@ public class Turret extends Entity implements Updatable {
         turnToMouse();
     }
 
+    //TODO -> extract methods
     private void turnToMouse() {
         Vector2 mousePosition = getGame().mouseInput.getMousePosition();
         Vector2 screenPosition = getGame().getCameraManager().getCamera().worldToScreen(getTransform().getPosition());
         Vector2 directionToMouse = mousePosition.subtract(screenPosition);
         directionToMouse.normalize();
-        getTransform().setRotation(Transformations.getAngleFromDirection(directionToMouse) + 90);
+
+        float targetAngle = Transformations.getAngleFromDirection(directionToMouse);
+        float currentAngle = getTransform().getRotation();
+
+        float angleDifference = targetAngle - currentAngle;
+        // Normalize to [-180, 180]
+        angleDifference = (angleDifference + 180) % 360 - 180;
+
+        // Calculate IDW (Inverse Distance Weighting)
+        // Add 1.0f to avoid division by zero
+        float idw = 1.0f / (Math.abs(angleDifference) + 1.0f);
+
+        float effectiveTurnSpeed = turnSpeed * idw;
+        float newAngle = lerp(currentAngle, currentAngle + angleDifference, effectiveTurnSpeed);
+
+        getTransform().setRotation(newAngle);
     }
 }

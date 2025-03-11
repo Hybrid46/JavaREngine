@@ -32,10 +32,9 @@ public class Player extends Entity implements Updatable {
         Parent parent =new Parent(getTransform());
         parent.addChild(turret.getTransform());
         addComponent(parent);
-        game.registerUpdatable(parent);
 
+        game.registerUpdatable(parent);
         game.registerUpdatable(this);
-        game.registerEntity(this);
     }
 
     public void update() {
@@ -93,6 +92,7 @@ public class Player extends Entity implements Updatable {
 
     public void doAttack() {
         System.out.println("Attack!");
+        new Bullet(turret);
         attacking = false;
     }
 

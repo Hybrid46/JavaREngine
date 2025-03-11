@@ -37,8 +37,6 @@ public class Transformations {
         float radians = (float) Math.atan2(direction.y, direction.x);
         float degrees; //declare first to avoid compiler error
         degrees = 180.0f * radians / (float) Math.PI;
-        return degrees;
+        return degrees + 90;
     }
-
-    //TODO camera transformations -> LocalToWorld, WorldToLocal
 }

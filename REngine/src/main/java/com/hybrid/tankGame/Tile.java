@@ -24,7 +24,5 @@ public class Tile extends Entity {
             RectCollider rectCollider = new RectCollider(getTransform(), new Vector2Int(64, 64));
             addComponent(rectCollider);
         }
-
-        game.registerEntity(this);
     }
 }

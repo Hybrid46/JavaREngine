@@ -7,10 +7,7 @@ import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.utils.ScreenUtils;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Game implements Runnable {
 
@@ -28,6 +25,11 @@ public class Game implements Runnable {
     private Thread gameThread;
     private final CameraManager cameraManager;
     private final GameBridge gameBridge;
+
+    private final Stack<Updatable> addUpdatables = new Stack<>();
+    private final Stack<RenderUpdatable> addRenderUpdatables = new Stack<>();
+    private final Stack<Updatable> removeUpdatables = new Stack<>();
+    private final Stack<RenderUpdatable> removeRenderUpdatables = new Stack<>();
 
     public Game() {
         gamePanel = new GamePanel(this);
@@ -52,10 +54,17 @@ public class Game implements Runnable {
     private void update() {
         colliders.clear();
 
+        while (!addUpdatables.isEmpty()) updatables.add(addUpdatables.pop());
+        while (!removeUpdatables.isEmpty()) updatables.remove(removeUpdatables.pop());
+
+        while (!addRenderUpdatables.isEmpty()) renderUpdatables.add(addRenderUpdatables.pop());
+        while (!removeRenderUpdatables.isEmpty()) renderUpdatables.remove(removeRenderUpdatables.pop());
+
         for (Updatable updatable : updatables) {
             updatable.update();
             if (updatable instanceof Collider) colliders.add((Collider)updatable);
         }
+
         keyboardInput.update();
         mouseInput.update();
 
@@ -66,6 +75,7 @@ public class Game implements Runnable {
 
     private void updateCollisions(){
         for (int c = 0; c < colliders.size(); c++) {
+            colliders.get(c).clearOthers();
             for (int o = 0; o < colliders.size(); o++) {
                 if (c == o) continue;
 
@@ -160,35 +170,19 @@ public class Game implements Runnable {
     }
 
     public void registerUpdatable(Updatable updatable) {
-        updatables.add(updatable);
+        addUpdatables.add(updatable);
     }
 
     public void unregisterUpdatable(Updatable updatable) {
-        updatables.remove(updatable);
+        removeUpdatables.remove(updatable);
     }
 
     public void registerRenderUpdatable(RenderUpdatable updatable) {
-        renderUpdatables.add(updatable);
+        addRenderUpdatables.add(updatable);
     }
 
     public void unregisterRenderUpdatable(RenderUpdatable updatable) {
-        renderUpdatables.remove(updatable);
-    }
-
-    public void registerUpdatables(Collection<Updatable> updatable) {
-        updatables.addAll(updatable);
-    }
-
-    public void unregisterUpdatables(Collection<Updatable> updatable) {
-        updatables.removeAll(updatable);
-    }
-
-    public void registerRenderUpdatables(Collection<RenderUpdatable> updatable) {
-        renderUpdatables.addAll(updatable);
-    }
-
-    public void unregisterRenderUpdatables(Collection<RenderUpdatable> updatable) {
-        renderUpdatables.removeAll(updatable);
+        removeRenderUpdatables.remove(updatable);
     }
 
     public void windowFocusLost() {

@@ -18,6 +18,7 @@ public class Entity {
         this.game = game;
         my_transform = new Transform(this);
         addComponent(my_transform);
+        game.registerEntity(this);
     }
 
     //Handle components by type

@@ -103,6 +103,10 @@ public class Vector2 {
         return new Vector2(other.x - this.x, other.y - this.y).normalize();
     }
 
+    public float signedAngleTo(Vector2 other){
+        return (float) (Math.atan2(other.y,other.x) - Math.atan2(y,x));
+    }
+
     // Dot product
     public float dot(Vector2 other) {
         return this.x * other.x + this.y * other.y;
