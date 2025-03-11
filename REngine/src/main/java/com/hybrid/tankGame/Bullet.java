@@ -18,7 +18,7 @@ public class Bullet extends Entity implements Updatable {
         velocity = parentDirection.multiply(speed);
 
         Transform transform = getTransform();
-        float initialOffset = 32f; // avoid self collision
+        float initialOffset = 16f; // avoid self collision
         transform.setPosition(parentTransform.getPosition().add(parentDirection.multiply(initialOffset)));
 
         Renderer renderer = new Renderer(transform, "bullet.png", 10);
