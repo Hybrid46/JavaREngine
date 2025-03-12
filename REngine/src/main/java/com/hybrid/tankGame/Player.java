@@ -92,7 +92,9 @@ public class Player extends Entity implements Updatable {
 
     public void doAttack() {
         //System.out.println("Attack!");
-        new Bullet(turret);
+        if (turret != null){
+            new Bullet(turret);
+        }
         attacking = false;
     }
 
@@ -132,4 +134,8 @@ public class Player extends Entity implements Updatable {
         this.down = down;
     }
 
+    public void Destroy(){
+        super.Destroy();
+        turret.Destroy();
+    }
 }

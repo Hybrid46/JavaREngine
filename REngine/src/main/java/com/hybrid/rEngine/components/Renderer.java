@@ -98,4 +98,8 @@ public class Renderer extends Component implements RenderUpdatable {
         g2d.rotate(-Math.toRadians(m_boundTransform.getRotation()));
         g2d.translate(-(boundingBox.x + centerX), -(boundingBox.y + centerY));
     }
+
+    public Transform getBoundTransform(){
+        return m_boundTransform;
+    }
 }

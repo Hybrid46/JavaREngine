@@ -2,11 +2,9 @@ package com.hybrid.rEngine.main;
 
 import com.hybrid.rEngine.components.Camera;
 import com.hybrid.rEngine.components.Entity;
-import com.hybrid.rEngine.components.Transform;
 import com.hybrid.rEngine.components.Updatable;
 import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.math.Vector2Int;
-import com.hybrid.rEngine.utils.ScreenUtils;
 import com.hybrid.rEngine.utils.Transformations;
 
 import java.awt.*;
@@ -14,12 +12,12 @@ import java.awt.event.KeyEvent;
 
 public class CameraManager extends Entity implements Updatable {
 
-    private final Vector2Int drawRange = new Vector2Int(256, 256);
+    private final Vector2Int drawRange = new Vector2Int(512, 512);
+    Vector2 screenCenter;
     private Camera camera;
     private float cameraSpeed = 2;
     private Rectangle boundingBox;
     private Entity followEntity;
-    Vector2 screenCenter;
 
     public CameraManager(Game game) {
         super(game);
@@ -36,19 +34,18 @@ public class CameraManager extends Entity implements Updatable {
 
     @Override
     public void update() {
-        if (followEntity != null){
-            Vector2 followPosition = followEntity.getTransform().getPosition();
-            this.getTransform().setPosition(followPosition.subtract(screenCenter));
-        }
-        else {
+        //followEntity = null;
+        if (followEntity != null) {
+            Vector2 followPosition = followEntity.getTransform().getPosition().subtract(screenCenter);
+            getTransform().setPosition(followPosition);
+        } else {
             Vector2 addPosition = new Vector2();
             if (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_UP)) addPosition.y -= cameraSpeed;
             if (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_DOWN)) addPosition.y += cameraSpeed;
             if (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_RIGHT)) addPosition.x += cameraSpeed;
             if (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_LEFT)) addPosition.x -= cameraSpeed;
 
-            Transform transform = this.getTransform();
-            transform.setPosition(transform.getPosition().add(addPosition));
+            getTransform().setPosition(getTransform().getPosition().add(addPosition));
         }
 
         updateBoundingBoxPosition();
@@ -56,7 +53,7 @@ public class CameraManager extends Entity implements Updatable {
 
     private void updateBoundingBoxPosition() {
         Vector2Int center = Transformations.getCenterPositionWithOffsetSize(this.getTransform().getPosition().getVector2Int(), new Vector2Int(), drawRange);
-        boundingBox.setLocation(center.toPoint());
+        boundingBox.setLocation(camera.screenToWorld(center.toVector2()).add(screenCenter).toPoint());
     }
 
     public void drawBoundingBox(Graphics2D g2d) {
@@ -68,7 +65,11 @@ public class CameraManager extends Entity implements Updatable {
         return camera;
     }
 
-    public void setFollowEntity(Entity entity){
+    public void setFollowEntity(Entity entity) {
         followEntity = entity;
+    }
+
+    public Rectangle getBoundingBox(){
+        return boundingBox;
     }
 }

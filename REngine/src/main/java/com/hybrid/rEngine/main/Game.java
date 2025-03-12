@@ -7,7 +7,10 @@ import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.utils.ScreenUtils;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Stack;
+import java.util.TreeMap;
 
 public class Game implements Runnable {
 
@@ -22,14 +25,14 @@ public class Game implements Runnable {
     private final TreeMap<Integer, ArrayList<RenderUpdatable>> layeredRenderUpdatables = new TreeMap<>();
     private final ArrayList<Collider> colliders = new ArrayList<>();
     private final HashSet<Entity> entities = new HashSet<>();
-    private Thread gameThread;
     private final CameraManager cameraManager;
     private final GameBridge gameBridge;
-
     private final Stack<Updatable> addUpdatables = new Stack<>();
     private final Stack<RenderUpdatable> addRenderUpdatables = new Stack<>();
     private final Stack<Updatable> removeUpdatables = new Stack<>();
     private final Stack<RenderUpdatable> removeRenderUpdatables = new Stack<>();
+    private Thread gameThread;
+    private int layeredRenderUpdatablesSize = 0;
 
     public Game() {
         gamePanel = new GamePanel(this);
@@ -61,7 +64,7 @@ public class Game implements Runnable {
 
         for (Updatable updatable : updatables) {
             updatable.update();
-            if (updatable instanceof Collider) colliders.add((Collider)updatable);
+            if (updatable instanceof Collider) colliders.add((Collider) updatable);
         }
 
         keyboardInput.update();
@@ -73,14 +76,14 @@ public class Game implements Runnable {
         gameBridge.updateGame();
     }
 
-    private void updateCollisions(){
+    private void updateCollisions() {
         for (int c = 0; c < colliders.size(); c++) {
             colliders.get(c).clearOthers();
             for (int o = 0; o < colliders.size(); o++) {
                 if (c == o) continue;
 
                 //rec-rect collision check
-                if (colliders.get(c) instanceof RectCollider && colliders.get(o) instanceof RectCollider)  {
+                if (colliders.get(c) instanceof RectCollider && colliders.get(o) instanceof RectCollider) {
                     ((RectCollider) colliders.get(c)).resolveCollision((RectCollider) colliders.get(o));
                 }
 
@@ -91,8 +94,11 @@ public class Game implements Runnable {
 
     public void render(Graphics2D g2d) {
         layeredRenderUpdatables.clear();
+        layeredRenderUpdatablesSize = 0;
 
         for (RenderUpdatable renderUpdatable : renderUpdatables) {
+            //if (!cameraManager.getBoundingBox().contains(((Renderer)renderUpdatable).getBoundTransform().getPosition().toPoint())) continue;
+
             int renderUpdatableLayer = renderUpdatable.getLayer();
 
             if (!layeredRenderUpdatables.containsKey(renderUpdatableLayer)) {
@@ -100,6 +106,7 @@ public class Game implements Runnable {
             }
 
             layeredRenderUpdatables.get(renderUpdatableLayer).add(renderUpdatable);
+            layeredRenderUpdatablesSize ++;
         }
 
         for (int layer : layeredRenderUpdatables.keySet()) {
@@ -158,7 +165,8 @@ public class Game implements Runnable {
                         " | UPS: " + updates +
                         " | Entities: " + entities.size() +
                         " | Updatables: " + updatables.size() +
-                        " | RenderUpdatables: " + renderUpdatables.size() +
+                        " | Layers:" + layeredRenderUpdatables.size() +
+                        " | RenderUpdatables Drawn/All:" + layeredRenderUpdatablesSize + "/" + renderUpdatables.size() +
                         " | update time: " + updateTime / 1000f + " micro sec" +
                         " | render time: " + renderTime / 1000f + " micro sec" +
                         " | Avg update time: " + (int) (updateTime / 1000f / 1000f * UPS_SET) + " ms" +
@@ -201,11 +209,11 @@ public class Game implements Runnable {
         entities.remove(entity);
     }
 
-    public CameraManager getCameraManager(){
+    public CameraManager getCameraManager() {
         return cameraManager;
     }
 
-    public Vector2 getWindowSize(){
+    public Vector2 getWindowSize() {
         return gameWindow.getWindowSize();
     }
 }
