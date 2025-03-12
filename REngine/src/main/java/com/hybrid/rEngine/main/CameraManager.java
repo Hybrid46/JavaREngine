@@ -14,7 +14,7 @@ import java.awt.event.KeyEvent;
 
 public class CameraManager extends Entity implements Updatable {
 
-    private final Vector2Int drawRange = new Vector2Int(128, 128);
+    private final Vector2Int drawRange = new Vector2Int(256, 256);
     private Camera camera;
     private float cameraSpeed = 2;
     private Rectangle boundingBox;

@@ -91,7 +91,7 @@ public class Player extends Entity implements Updatable {
     }
 
     public void doAttack() {
-        System.out.println("Attack!");
+        //System.out.println("Attack!");
         new Bullet(turret);
         attacking = false;
     }

@@ -1,14 +1,14 @@
 package com.hybrid.tankGame;
 
 import com.hybrid.rEngine.main.Game;
+
 import java.util.Arrays;
 
 public class LevelGenerator {
 
     private final int MAP_SIZE = 20;
-    private final int TILE_SIZE = 64;
-
     public final boolean[][] pathMap = new boolean[MAP_SIZE][MAP_SIZE];
+    private final int TILE_SIZE = 64;
 
     public void generateLevel(Game game) {
         generateRandomMap();
@@ -21,14 +21,18 @@ public class LevelGenerator {
     private void generateRandomMap() {
         for (int y = 0; y < MAP_SIZE; y++) {
             for (int x = 0; x < MAP_SIZE; x++) {
-                pathMap[x][y] = Math.random() > 0.5d;
+                if (x == 0 || y == 0 || x == MAP_SIZE - 1 || y == MAP_SIZE - 1) {
+                    pathMap[x][y] = false;
+                } else {
+                    pathMap[x][y] = Math.random() > 0.5d;
+                }
             }
         }
     }
 
     private void filterNeighbours() {
-        for (int y = 0; y < MAP_SIZE; y++) {
-            for (int x = 0; x < MAP_SIZE; x++) {
+        for (int y = 2; y < MAP_SIZE - 2; y++) {
+            for (int x = 2; x < MAP_SIZE - 2; x++) {
                 if (!pathMap[x][y]) {
 
                     for (int yy = -1; yy <= 1; yy++) {
@@ -58,7 +62,7 @@ public class LevelGenerator {
         }
     }
 
-    private void printMap(){
+    private void printMap() {
         System.out.println("[LevelGenerator] Path Map:");
         System.out.println(Arrays.deepToString(pathMap).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
     }
