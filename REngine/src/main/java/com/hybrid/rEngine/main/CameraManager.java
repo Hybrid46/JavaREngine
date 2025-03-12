@@ -69,6 +69,10 @@ public class CameraManager extends Entity implements Updatable {
         followEntity = entity;
     }
 
+    public Entity getFollowEntity(){
+        return followEntity;
+    }
+
     public Rectangle getBoundingBox(){
         return boundingBox;
     }
