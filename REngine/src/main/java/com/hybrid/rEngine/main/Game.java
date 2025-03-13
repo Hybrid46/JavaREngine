@@ -95,10 +95,12 @@ public class Game implements Runnable {
     public void render(Graphics2D g2d) {
         layeredRenderUpdatables.clear();
         layeredRenderUpdatablesSize = 0;
+        float drawRange = Math.max(gameWindow.getWindowSize().x,gameWindow.getWindowSize().y) / 2;
 
         for (RenderUpdatable renderUpdatable : renderUpdatables) {
+            //TODO
             //if (!cameraManager.getBoundingBox().contains(((Renderer)renderUpdatable).getBoundTransform().getPosition().toPoint())) continue;
-            if (cameraManager.getFollowEntity().getTransform().getPosition().distanceTo(((Renderer)renderUpdatable).getBoundTransform().getPosition()) > 256) continue;
+            if (cameraManager.getFollowEntity().getTransform().getPosition().distanceTo(((Renderer)renderUpdatable).getBoundTransform().getPosition()) > drawRange) continue;
 
             int renderUpdatableLayer = renderUpdatable.getLayer();
 

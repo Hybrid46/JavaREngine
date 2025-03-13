@@ -58,7 +58,7 @@ public class Renderer extends Component implements RenderUpdatable {
         Vector2 worldToCamera = cameraManager.getCamera().worldToScreen(new Vector2(boundingBox.x, boundingBox.y));
         boundingBox.setLocation(worldToCamera.toPoint());
         drawImage(g2d);
-        drawBoundingBox(g2d);
+        //drawBoundingBox(g2d);
     }
 
     public Vector2Int getSize() {
