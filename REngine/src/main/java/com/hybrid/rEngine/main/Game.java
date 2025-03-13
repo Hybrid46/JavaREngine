@@ -95,7 +95,7 @@ public class Game implements Runnable {
     public void render(Graphics2D g2d) {
         layeredRenderUpdatables.clear();
         layeredRenderUpdatablesSize = 0;
-        float drawRange = Math.max(gameWindow.getWindowSize().x,gameWindow.getWindowSize().y) / 2;
+        float drawRange = Math.max(gameWindow.getWindowSize().x,gameWindow.getWindowSize().y) * 0.6f;
 
         for (RenderUpdatable renderUpdatable : renderUpdatables) {
             //TODO
@@ -118,7 +118,7 @@ public class Game implements Runnable {
             }
         }
 
-        cameraManager.drawBoundingBox(g2d);
+        //cameraManager.drawBoundingBox(g2d);
     }
 
     @Override
