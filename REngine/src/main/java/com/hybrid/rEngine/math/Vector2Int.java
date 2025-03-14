@@ -1,8 +1,9 @@
 package com.hybrid.rEngine.math;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Vector2Int {
+public class Vector2Int implements Serializable {
     public int x;
     public int y;
 
