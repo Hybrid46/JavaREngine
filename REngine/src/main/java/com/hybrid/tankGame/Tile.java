@@ -17,7 +17,7 @@ public class Tile extends Entity {
         transform.setPosition(new Vector2(x, y));
         addComponent(transform);
 
-        Renderer renderer = new Renderer(transform, walkable ? "concrete_road.png" : "dragon_tooth.png", 5);
+        Renderer renderer = new Renderer(transform, walkable ? "road.png" : "dragon_tooth.png", 5);
         addComponent(renderer);
 
         if (!walkable) {
