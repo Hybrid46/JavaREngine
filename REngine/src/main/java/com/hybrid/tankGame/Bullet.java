@@ -20,6 +20,7 @@ public class Bullet extends Entity implements Updatable {
         Transform transform = getTransform();
         float initialOffset = 16f; // avoid self collision
         transform.setPosition(parentTransform.getPosition().add(parentDirection.multiply(initialOffset)));
+        transform.setRotation(parentTransform.getRotation());
 
         Renderer renderer = new Renderer(transform, "bullet.png", 10);
         addComponent(renderer);
