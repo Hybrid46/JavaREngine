@@ -3,7 +3,7 @@ package com.hybrid.rEngine.components;
 import com.hybrid.rEngine.main.CameraManager;
 import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.math.Vector2Int;
-import com.hybrid.rEngine.utils.LoadSave;
+import com.hybrid.rEngine.utils.ResourceLoader;
 import com.hybrid.rEngine.utils.Transformations;
 
 import java.awt.*;
@@ -85,7 +85,7 @@ public class Renderer extends Component implements RenderUpdatable {
     }
 
     private void loadImage() {
-        image = LoadSave.GetSprite(spriteFileName);
+        image = ResourceLoader.GetSprite(spriteFileName);
     }
 
     private void drawImage(Graphics2D g2d) {

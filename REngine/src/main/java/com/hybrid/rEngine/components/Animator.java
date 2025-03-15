@@ -2,7 +2,7 @@ package com.hybrid.rEngine.components;
 
 import com.hybrid.rEngine.main.CameraManager;
 import com.hybrid.rEngine.math.Vector2Int;
-import com.hybrid.rEngine.utils.LoadSave;
+import com.hybrid.rEngine.utils.ResourceLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -31,7 +31,7 @@ public class Animator extends Component implements Updatable, RenderUpdatable {
         this.atlasFileName = atlasFileName;
         this.subImageSize = renderer.getSize();
 
-        BufferedImage img = LoadSave.GetSprite(this.atlasFileName);
+        BufferedImage img = ResourceLoader.GetSprite(this.atlasFileName);
 
         animation = new BufferedImage[subImageCount];
         for (int i = 0; i < animation.length; i++) {

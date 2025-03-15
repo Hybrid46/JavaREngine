@@ -5,14 +5,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class LoadSave {
+public class ResourceLoader {
 
     public static BufferedImage GetSprite(String fileName) {
         //System.out.println("[LoadSave] Loading image -> " + fileName);
 
         fileName = "/images/" + fileName;
         BufferedImage img = null;
-        InputStream inputStream = LoadSave.class.getResourceAsStream(fileName);
+        InputStream inputStream = ResourceLoader.class.getResourceAsStream(fileName);
 
         if (inputStream == null) {
             System.err.println("[LoadSave] Failed to load image -> " + fileName);
