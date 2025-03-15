@@ -10,8 +10,8 @@ public class Turret extends Entity implements Updatable {
 
     private final float turnSpeed = 0.5f;
 
-    public Turret(Game game) {
-        super(game);
+    public Turret(Game game, int owner) {
+        super(game, owner);
 
         Renderer renderer = new Renderer(super.getTransform(), "tank_green_turret.png", 15);
         addComponent(renderer);

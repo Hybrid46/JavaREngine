@@ -20,7 +20,7 @@ public class CameraManager extends Entity implements Updatable {
     private Entity followEntity;
 
     public CameraManager(Game game) {
-        super(game);
+        super(game, -1);
 
         camera = new Camera(this.getTransform());
         Vector2 windowSize = game.getWindowSize();

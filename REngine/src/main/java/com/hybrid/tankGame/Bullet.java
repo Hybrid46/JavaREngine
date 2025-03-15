@@ -9,7 +9,7 @@ public class Bullet extends Entity implements Updatable {
     final float speed = 3.5f;
 
     public Bullet(Entity parent) {
-        super(parent.getGame());
+        super(parent.getGame(), parent.getOwner());
         Transform parentTransform = parent.getTransform();
         float parentRotation = parentTransform.getRotation() - 90;
         Vector2 parentDirection = Vector2.angleToVector(parentRotation);
@@ -40,6 +40,7 @@ public class Bullet extends Entity implements Updatable {
         for (Collider other : collider.getOthers()) {
             if (other instanceof RectCollider) {
                 Entity otherEntity = ((RectCollider) other).getParentEntity();
+                if (getOwner() == otherEntity.getOwner()) continue; //skip self damage
                 if (!otherEntity.isStatic()) otherEntity.Destroy();
                 Destroy();
             }

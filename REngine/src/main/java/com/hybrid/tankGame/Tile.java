@@ -10,7 +10,7 @@ import com.hybrid.rEngine.math.Vector2Int;
 
 public class Tile extends Entity {
     public Tile(Game game, int x, int y, boolean walkable) {
-        super(game);
+        super(game, -1);
         setStatic(true);
 
         Transform transform = getTransform();

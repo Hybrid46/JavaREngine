@@ -25,7 +25,7 @@ public class GameBridge {
         levelGenerator = new LevelGenerator(game);
         Vector2[] positions = levelGenerator.generateLevel();
 
-        player = new Player(game);
+        player = new Player(game, 0);
         player.getTransform().setPosition(positions[0]);
         game.getCameraManager().setFollowEntity(player);
 

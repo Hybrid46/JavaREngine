@@ -9,13 +9,15 @@ import java.util.Map;
 
 public class Entity {
 
+    private final int owner;
     private final Game game;
     private final Transform my_transform;
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
     private boolean isStatic = false;
 
-    public Entity(Game game) {
+    public Entity(Game game, int owner) {
         this.game = game;
+        this.owner = owner;
         my_transform = new Transform(this);
         addComponent(my_transform);
         game.registerEntity(this);
@@ -113,6 +115,10 @@ public class Entity {
 
     public Game getGame() {
         return game;
+    }
+
+    public int getOwner(){
+        return owner;
     }
 
     public void Destroy() {

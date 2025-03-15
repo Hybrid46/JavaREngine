@@ -71,7 +71,6 @@ public class Game implements Runnable {
         mouseInput.update();
 
         updateCollisions();
-        colliders.clear();
 
         gameBridge.updateGame();
     }
@@ -90,6 +89,8 @@ public class Game implements Runnable {
                 //other collision types...
             }
         }
+
+        colliders.clear();
     }
 
     public void render(Graphics2D g2d) {

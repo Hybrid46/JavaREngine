@@ -16,8 +16,8 @@ public class Player extends Entity implements Updatable {
     private boolean left, up, right, down;
     private Turret turret;
 
-    public Player(Game game) {
-        super(game);
+    public Player(Game game, int owner) {
+        super(game, owner);
 
         Transform transform = getTransform();
 
@@ -27,8 +27,8 @@ public class Player extends Entity implements Updatable {
         RectCollider rectCollider = new RectCollider(transform, new Vector2Int(64, 64));
         addComponent(rectCollider);
 
-        turret = new Turret(game);
-        Parent parent =new Parent(getTransform());
+        turret = new Turret(game, owner);
+        Parent parent = new Parent(getTransform());
         parent.addChild(turret.getTransform());
         addComponent(parent);
 
@@ -91,7 +91,7 @@ public class Player extends Entity implements Updatable {
 
     public void doAttack() {
         //System.out.println("Attack!");
-        if (turret != null){
+        if (turret != null) {
             new Bullet(turret);
         }
         attacking = false;
@@ -133,7 +133,7 @@ public class Player extends Entity implements Updatable {
         this.down = down;
     }
 
-    public void Destroy(){
+    public void Destroy() {
         super.Destroy();
         turret.Destroy();
     }
