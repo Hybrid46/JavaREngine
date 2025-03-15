@@ -21,14 +21,14 @@ public class ResourceLoader {
         InputStream inputStream = ResourceLoader.class.getResourceAsStream(resourcePath);
 
         if (inputStream == null) {
-            System.err.println("[LoadSave] Failed to load image -> " + resourcePath);
+            System.err.println("[ResourceLoader] Failed to load image -> " + resourcePath);
             return null;
         }
 
         try {
             BufferedImage img = ImageIO.read(inputStream);
             images.put(fileName, img);  // Use the original fileName as the key
-            System.out.println("[LoadSave] Loaded image -> " + fileName);
+            System.out.println("[ResourceLoader] Loaded image -> " + fileName);
             return img;
         } catch (IOException e) {
             e.printStackTrace();

@@ -21,7 +21,15 @@ public class Player extends Entity implements Updatable {
 
         Transform transform = getTransform();
 
-        Renderer renderer = new Renderer(transform, "tank_green_body.png", 10);
+        Renderer renderer;
+        if (owner == 0) {
+            renderer = new Renderer(transform, "tank_green_body.png", 10);
+        }
+        else {
+            renderer = new Renderer(transform, "tank_red_body.png", 10);
+            Enemy enemy = new Enemy();
+            addComponent(enemy);
+        }
         addComponent(renderer);
 
         RectCollider rectCollider = new RectCollider(transform, new Vector2Int(64, 64));
@@ -46,10 +54,10 @@ public class Player extends Entity implements Updatable {
         transform.setPosition(positionAndVelocity);
         transform.addRotation(updatePos().x);
 
-        setUp(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_W));
-        setDown(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_S));
-        setLeft(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_A));
-        setRight(getGame().keyboardInput.isKeyPressed(KeyEvent.VK_D));
+        up = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_W));
+        down = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_S));
+        left = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_A));
+        right = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_D));
 
         if (getGame().mouseInput.isButtonPressed(MouseEvent.BUTTON1)) {
             System.out.println("Player, button 1 pressed");
@@ -99,38 +107,6 @@ public class Player extends Entity implements Updatable {
 
     public void setAttacking(boolean attacking) {
         this.attacking = attacking;
-    }
-
-    public boolean isLeft() {
-        return left;
-    }
-
-    public void setLeft(boolean left) {
-        this.left = left;
-    }
-
-    public boolean isUp() {
-        return up;
-    }
-
-    public void setUp(boolean up) {
-        this.up = up;
-    }
-
-    public boolean isRight() {
-        return right;
-    }
-
-    public void setRight(boolean right) {
-        this.right = right;
-    }
-
-    public boolean isDown() {
-        return down;
-    }
-
-    public void setDown(boolean down) {
-        this.down = down;
     }
 
     public void Destroy() {

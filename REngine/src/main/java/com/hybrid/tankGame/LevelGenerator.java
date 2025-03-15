@@ -2,13 +2,14 @@ package com.hybrid.tankGame;
 
 import com.hybrid.rEngine.main.Game;
 import com.hybrid.rEngine.math.Vector2;
+import com.hybrid.rEngine.math.Vector2Int;
 
 import java.io.*;
 import java.util.Arrays;
 
 public class LevelGenerator {
 
-    private final int MAP_SIZE = 20;
+    private final int MAP_SIZE = 10;
     public final boolean[][] pathMap = new boolean[MAP_SIZE][MAP_SIZE];
     private final int TILE_SIZE = 64;
     private final String SAVE_FILE_NAME = "savegame.dat";
@@ -56,7 +57,7 @@ public class LevelGenerator {
         }
     }
 
-    public Vector2[] generateLevel() {
+    public Vector2[] generateLevel(int enemyCount) {
         Vector2[] positions;
 
         if (hasSaveGame()) {
@@ -64,7 +65,15 @@ public class LevelGenerator {
         } else {
             generateRandomMap();
             filterNeighbours();
-            positions = new Vector2[]{ new Vector2(100,100)};
+            positions = new Vector2[enemyCount + 1];
+
+            for (int i = 0; i < enemyCount + 1; i++) {
+                if (i == 0) {
+                    positions[0] = new Vector2(100, 100);
+                } else {
+                    positions[i] = getSpawnPoint(positions[0]);
+                }
+            }
         }
         printMap();
         generateTileEntities();
@@ -127,5 +136,42 @@ public class LevelGenerator {
         if (saveFile.exists()) {
             saveFile.delete();
         }
+    }
+
+    public Vector2 getSpawnPoint(Vector2 position) {
+        Vector2Int gridPosition = position.getVector2Int().divide(TILE_SIZE);
+        System.out.println("position -> " + gridPosition.toString());
+        Vector2 spawnPoint = findFarthestPoint(pathMap, gridPosition).toVector2().multiply(TILE_SIZE);
+        return spawnPoint;
+    }
+
+    private Vector2Int findFarthestPoint(boolean[][] grid, Vector2Int position) {
+
+        if (position.x < 0 || position.x >= grid.length || position.y < 0 || position.y >= grid[0].length) {
+            System.out.println("[LevelGenerator] Invalid grid position!");
+            return null;
+        }
+
+        int maxDistanceSq = -1;
+        Vector2Int farthestPos = null;
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (!grid[i][j]) { // Check if the cell is false
+                    // Calculate squared Euclidean distance to avoid floating-point operations
+                    int dx = i - position.x;
+                    int dy = j - position.y;
+                    int distanceSq = dx * dx + dy * dy;
+
+                    // Update farthest position if current distance is greater or equal (to handle ties)
+                    if (distanceSq > maxDistanceSq || (distanceSq == maxDistanceSq && farthestPos == null)) {
+                        maxDistanceSq = distanceSq;
+                        farthestPos = new Vector2Int(i, j);
+                    }
+                }
+            }
+        }
+
+        return farthestPos; // Returns null if no false cells are found
     }
 }
