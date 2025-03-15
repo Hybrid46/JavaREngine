@@ -3,6 +3,8 @@ package com.hybrid.rEngine.components;
 import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.utils.Transformations;
 
+import static com.hybrid.rEngine.math.MathUtils.lerp;
+
 public class Transform extends Component {
 
     private final Entity entity;
@@ -86,6 +88,23 @@ public class Transform extends Component {
 
     public Vector2 getForward() {
         return Transformations.getDirection(rotation + 90);
+    }
+
+    public void turnToDirection(Vector2 normalizedDirection, float turnSpeed){
+        float targetAngle = Transformations.getAngleFromDirection(normalizedDirection);
+        float currentAngle = rotation;
+
+        float angleDifference = targetAngle - currentAngle;
+        // Normalize to [-180, 180]
+        angleDifference = (angleDifference + 180) % 360 - 180;
+
+        // Calculate IDW (Inverse Distance Weighting)
+        // Add 1.0f to avoid division by zero
+        float idw = 1.0f / (Math.abs(angleDifference) + 1.0f);
+
+        float effectiveTurnSpeed = turnSpeed * idw;
+
+        rotation = lerp(currentAngle, currentAngle + angleDifference, effectiveTurnSpeed);
     }
 
     public boolean isStatic() {
