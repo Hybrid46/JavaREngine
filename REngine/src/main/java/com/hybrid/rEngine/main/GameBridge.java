@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 //Parent class for all Game variable and handles all the logic
 public class GameBridge {
 
-    private final int difficulty = 3;
+    private int difficulty = 3;
     private Game game;
     private Player player;
     private Player[] enemys = new Player[difficulty];
@@ -25,8 +25,9 @@ public class GameBridge {
 
     public void startGame() {
         levelGenerator = new LevelGenerator(game);
-        int enemyCount = difficulty; //TODO difficulty should be saved too!
+        int enemyCount = difficulty;
         Vector2[] positions = levelGenerator.generateLevel(enemyCount);
+        difficulty = positions.length - 1; //Sync back from positions -> On level load it sets the difficulty
 
         player = new Player(game, 0);
         player.getTransform().setPosition(positions[0]);
@@ -34,8 +35,7 @@ public class GameBridge {
 
         for (int i = 0; i < difficulty; i++) {
             enemys[i] = new Player(game, i + 1);
-            //enemys[i].getTransform().setPosition(positions[i + 1]);
-            enemys[i].getTransform().setPosition(new Vector2((i+1) * 75,100));
+            enemys[i].getTransform().setPosition(positions[i + 1]);
         }
 
         System.out.println("Game started...");

@@ -5,11 +5,13 @@ import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.rEngine.math.Vector2Int;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class LevelGenerator {
 
-    private final int MAP_SIZE = 10;
+    private final int MAP_SIZE = 20;
     public final boolean[][] pathMap = new boolean[MAP_SIZE][MAP_SIZE];
     private final int TILE_SIZE = 64;
     private final String SAVE_FILE_NAME = "savegame.dat";
@@ -66,12 +68,14 @@ public class LevelGenerator {
             generateRandomMap();
             filterNeighbours();
             positions = new Vector2[enemyCount + 1];
+            List<Vector2Int> occupiedGridPositions = new ArrayList<>();
 
             for (int i = 0; i < enemyCount + 1; i++) {
                 if (i == 0) {
-                    positions[0] = new Vector2(100, 100);
+                    positions[0] = new Vector2(2 * TILE_SIZE, 2 * TILE_SIZE);
                 } else {
-                    positions[i] = getSpawnPoint(positions[0]);
+                    positions[i] = getSpawnPoint(positions[0], occupiedGridPositions).toVector2().multiply(TILE_SIZE);
+                    occupiedGridPositions.add(positions[i].divide(TILE_SIZE).getVector2Int());
                 }
             }
         }
@@ -138,40 +142,37 @@ public class LevelGenerator {
         }
     }
 
-    public Vector2 getSpawnPoint(Vector2 position) {
-        Vector2Int gridPosition = position.getVector2Int().divide(TILE_SIZE);
-        System.out.println("position -> " + gridPosition.toString());
-        Vector2 spawnPoint = findFarthestPoint(pathMap, gridPosition).toVector2().multiply(TILE_SIZE);
-        return spawnPoint;
-    }
+    public Vector2Int getSpawnPoint(Vector2 playerPosition, List<Vector2Int> occupiedGridPositions) {
+        Vector2Int playerGridPosition = playerPosition.getVector2Int().divide(TILE_SIZE);
 
-    private Vector2Int findFarthestPoint(boolean[][] grid, Vector2Int position) {
+        System.out.println("Player grid position -> " + playerGridPosition.toString());
 
-        if (position.x < 0 || position.x >= grid.length || position.y < 0 || position.y >= grid[0].length) {
-            System.out.println("[LevelGenerator] Invalid grid position!");
-            return null;
+        for (Vector2Int occupiedGridPosition : occupiedGridPositions) {
+            System.out.println("Enemy grid position -> " + occupiedGridPosition.toString());
         }
 
-        int maxDistanceSq = -1;
-        Vector2Int farthestPos = null;
+        Vector2Int spawnPoint = null;
+        int spawnRange = Math.max(10, MAP_SIZE / 2);
 
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                if (!grid[i][j]) { // Check if the cell is false
-                    // Calculate squared Euclidean distance to avoid floating-point operations
-                    int dx = i - position.x;
-                    int dy = j - position.y;
-                    int distanceSq = dx * dx + dy * dy;
+        while (true) {
+            int x = (int) Math.round(Math.random() * MAP_SIZE);
+            int y = (int) Math.round(Math.random() * MAP_SIZE);
+            x = Math.max(1, x);
+            y = Math.max(1, y);
+            x = Math.min(MAP_SIZE - 1, x);
+            y = Math.min(MAP_SIZE - 1, y);
 
-                    // Update farthest position if current distance is greater or equal (to handle ties)
-                    if (distanceSq > maxDistanceSq || (distanceSq == maxDistanceSq && farthestPos == null)) {
-                        maxDistanceSq = distanceSq;
-                        farthestPos = new Vector2Int(i, j);
-                    }
-                }
-            }
+            spawnPoint = new Vector2Int(x, y);
+
+            if (spawnPoint == playerGridPosition) continue; //on player pos
+            if (!pathMap[spawnPoint.x][spawnPoint.y]) continue; //non walkable
+            if (playerGridPosition.distanceTo(spawnPoint) < spawnRange) continue; //too close
+            if (!occupiedGridPositions.isEmpty() && occupiedGridPositions.contains(spawnPoint))
+                continue; //already occupied by other enemy
+
+            System.out.println("Spawning to " + spawnPoint.toString());
+            return spawnPoint;
         }
 
-        return farthestPos; // Returns null if no false cells are found
     }
 }
