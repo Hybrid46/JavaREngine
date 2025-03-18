@@ -34,7 +34,7 @@ public class GameBridge {
         game.getCameraManager().setFollowEntity(player);
 
         for (int i = 0; i < difficulty; i++) {
-            enemys[i] = new Player(game, i + 1);
+            enemys[i] = new Player(game, 1);
             enemys[i].getTransform().setPosition(positions[i + 1]);
         }
 

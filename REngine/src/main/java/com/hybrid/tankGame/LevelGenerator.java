@@ -74,8 +74,9 @@ public class LevelGenerator {
                 if (i == 0) {
                     positions[0] = new Vector2(2 * TILE_SIZE, 2 * TILE_SIZE);
                 } else {
-                    positions[i] = getSpawnPoint(positions[0], occupiedGridPositions).toVector2().multiply(TILE_SIZE);
-                    occupiedGridPositions.add(positions[i].divide(TILE_SIZE).getVector2Int());
+                    Vector2Int spawnPoint = getSpawnPoint(positions[0], occupiedGridPositions);
+                    occupiedGridPositions.add(spawnPoint);
+                    positions[i] = spawnPoint.toVector2().multiply(TILE_SIZE);
                 }
             }
         }
@@ -151,7 +152,7 @@ public class LevelGenerator {
             System.out.println("Enemy grid position -> " + occupiedGridPosition.toString());
         }
 
-        Vector2Int spawnPoint = null;
+        Vector2Int spawnPoint;
         int spawnRange = Math.max(10, MAP_SIZE / 2);
 
         while (true) {
@@ -167,12 +168,10 @@ public class LevelGenerator {
             if (spawnPoint == playerGridPosition) continue; //on player pos
             if (!pathMap[spawnPoint.x][spawnPoint.y]) continue; //non walkable
             if (playerGridPosition.distanceTo(spawnPoint) < spawnRange) continue; //too close
-            if (!occupiedGridPositions.isEmpty() && occupiedGridPositions.contains(spawnPoint))
-                continue; //already occupied by other enemy
+            if (!occupiedGridPositions.isEmpty() && occupiedGridPositions.contains(spawnPoint)) continue; //already occupied by other enemy
 
             System.out.println("Spawning to " + spawnPoint.toString());
             return spawnPoint;
         }
-
     }
 }
