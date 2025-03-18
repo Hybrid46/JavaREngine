@@ -1,6 +1,7 @@
 package com.hybrid.rEngine.main;
 
 import com.hybrid.rEngine.math.Vector2;
+import com.hybrid.tankGame.EnemyController;
 import com.hybrid.tankGame.LevelGenerator;
 import com.hybrid.tankGame.Player;
 
@@ -10,7 +11,7 @@ import java.awt.event.KeyEvent;
 //Parent class for all Game variable and handles all the logic
 public class GameBridge {
 
-    private int difficulty = 3;
+    private int difficulty = 5;
     private Game game;
     private Player player;
     private Player[] enemys = new Player[difficulty];
@@ -34,8 +35,11 @@ public class GameBridge {
         game.getCameraManager().setFollowEntity(player);
 
         for (int i = 0; i < difficulty; i++) {
-            enemys[i] = new Player(game, 1);
+            enemys[i] = new Player(game, i + 1);
             enemys[i].getTransform().setPosition(positions[i + 1]);
+
+            EnemyController enemy = new EnemyController(this);
+            enemys[i].addComponent(enemy);
         }
 
         System.out.println("Game started...");
@@ -70,5 +74,15 @@ public class GameBridge {
         game.mouseInput.reset();
 
         System.out.println("Window focus lost");
+    }
+
+    public LevelGenerator getLevelGenerator() {
+        return levelGenerator;
+    }
+
+    public Player getPlayer(int index) {
+        if (index == 0) return player;
+        if (index > 0 && index <= enemys.length) return enemys[index - 1];
+        return null;
     }
 }

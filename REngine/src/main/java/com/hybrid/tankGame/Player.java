@@ -27,8 +27,6 @@ public class Player extends Entity implements Updatable {
         }
         else {
             renderer = new Renderer(transform, "tank_red_body.png", 10);
-            Enemy enemy = new Enemy();
-            addComponent(enemy);
         }
         addComponent(renderer);
 
