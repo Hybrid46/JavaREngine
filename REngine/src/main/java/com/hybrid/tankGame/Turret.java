@@ -11,7 +11,7 @@ public class Turret extends Entity implements Updatable {
     public Turret(Game game, int owner) {
         super(game, owner);
 
-        Renderer renderer = new Renderer(super.getTransform(), "tank_green_turret.png", 15);
+        Renderer renderer = new Renderer(super.getTransform(), owner == 0 ? "tank_green_turret.png" : "tank_red_turret.png", 15);
         addComponent(renderer);
 
         game.registerUpdatable(this);

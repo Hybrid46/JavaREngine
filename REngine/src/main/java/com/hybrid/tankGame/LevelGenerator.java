@@ -2,9 +2,12 @@ package com.hybrid.tankGame;
 
 import com.hybrid.rEngine.main.Game;
 import com.hybrid.rEngine.math.Vector2;
+import com.hybrid.rEngine.math.Vector2Int;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class LevelGenerator {
 
@@ -56,7 +59,7 @@ public class LevelGenerator {
         }
     }
 
-    public Vector2[] generateLevel() {
+    public Vector2[] generateLevel(int enemyCount) {
         Vector2[] positions;
 
         if (hasSaveGame()) {
@@ -64,7 +67,18 @@ public class LevelGenerator {
         } else {
             generateRandomMap();
             filterNeighbours();
-            positions = new Vector2[]{ new Vector2(100,100)};
+            positions = new Vector2[enemyCount + 1];
+            List<Vector2Int> occupiedGridPositions = new ArrayList<>();
+
+            for (int i = 0; i < enemyCount + 1; i++) {
+                if (i == 0) {
+                    positions[0] = new Vector2(2 * TILE_SIZE, 2 * TILE_SIZE);
+                } else {
+                    Vector2Int spawnPoint = getSpawnPoint(positions[0], occupiedGridPositions);
+                    occupiedGridPositions.add(spawnPoint);
+                    positions[i] = spawnPoint.toVector2().multiply(TILE_SIZE);
+                }
+            }
         }
         printMap();
         generateTileEntities();
@@ -126,6 +140,38 @@ public class LevelGenerator {
         File saveFile = new File(SAVE_FILE_NAME);
         if (saveFile.exists()) {
             saveFile.delete();
+        }
+    }
+
+    public Vector2Int getSpawnPoint(Vector2 playerPosition, List<Vector2Int> occupiedGridPositions) {
+        Vector2Int playerGridPosition = playerPosition.getVector2Int().divide(TILE_SIZE);
+
+        System.out.println("Player grid position -> " + playerGridPosition.toString());
+
+        for (Vector2Int occupiedGridPosition : occupiedGridPositions) {
+            System.out.println("Enemy grid position -> " + occupiedGridPosition.toString());
+        }
+
+        Vector2Int spawnPoint;
+        int spawnRange = Math.max(10, MAP_SIZE / 2);
+
+        while (true) {
+            int x = (int) Math.round(Math.random() * MAP_SIZE);
+            int y = (int) Math.round(Math.random() * MAP_SIZE);
+            x = Math.max(1, x);
+            y = Math.max(1, y);
+            x = Math.min(MAP_SIZE - 1, x);
+            y = Math.min(MAP_SIZE - 1, y);
+
+            spawnPoint = new Vector2Int(x, y);
+
+            if (spawnPoint == playerGridPosition) continue; //on player pos
+            if (!pathMap[spawnPoint.x][spawnPoint.y]) continue; //non walkable
+            if (playerGridPosition.distanceTo(spawnPoint) < spawnRange) continue; //too close
+            if (!occupiedGridPositions.isEmpty() && occupiedGridPositions.contains(spawnPoint)) continue; //already occupied by other enemy
+
+            System.out.println("Spawning to " + spawnPoint.toString());
+            return spawnPoint;
         }
     }
 }

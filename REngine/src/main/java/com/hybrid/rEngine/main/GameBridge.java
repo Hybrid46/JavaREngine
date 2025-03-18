@@ -10,8 +10,10 @@ import java.awt.event.KeyEvent;
 //Parent class for all Game variable and handles all the logic
 public class GameBridge {
 
+    private int difficulty = 3;
     private Game game;
     private Player player;
+    private Player[] enemys = new Player[difficulty];
     private LevelGenerator levelGenerator;
 
     private GameBridge() {
@@ -23,11 +25,18 @@ public class GameBridge {
 
     public void startGame() {
         levelGenerator = new LevelGenerator(game);
-        Vector2[] positions = levelGenerator.generateLevel();
+        int enemyCount = difficulty;
+        Vector2[] positions = levelGenerator.generateLevel(enemyCount);
+        difficulty = positions.length - 1; //Sync back from positions -> On level load it sets the difficulty
 
         player = new Player(game, 0);
         player.getTransform().setPosition(positions[0]);
         game.getCameraManager().setFollowEntity(player);
+
+        for (int i = 0; i < difficulty; i++) {
+            enemys[i] = new Player(game, 1);
+            enemys[i].getTransform().setPosition(positions[i + 1]);
+        }
 
         System.out.println("Game started...");
     }
@@ -47,6 +56,8 @@ public class GameBridge {
             levelGenerator.deleteSaveGame();
             System.out.println("Save file removed!");
         }
+
+        //TODO Update enemy controller components
     }
 
     public void windowFocusGained() {

@@ -1,4 +1,11 @@
 package com.hybrid.tankGame;
 
-public class Enemy {
+import com.hybrid.rEngine.components.*;
+
+public class Enemy extends Component implements Updatable {
+
+    @Override
+    public void update() {
+
+    }
 }
