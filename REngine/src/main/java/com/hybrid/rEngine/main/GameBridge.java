@@ -30,16 +30,16 @@ public class GameBridge {
     public void startGame() {
         levelGenerator = new LevelGenerator(game);
         int enemyCount = difficulty;
-        Vector2[] positions = levelGenerator.generateLevel(enemyCount);
-        difficulty = positions.length - 1; //Sync back from positions -> On level load it sets the difficulty
+        List<Vector2> positions = levelGenerator.generateLevel(enemyCount);
+        difficulty = positions.size() - 1; //Sync back from positions -> On level load it sets the difficulty
 
         player = new Player(game, 0);
-        player.getTransform().setPosition(positions[0]);
+        player.getTransform().setPosition(positions.get(0));
         game.getCameraManager().setFollowEntity(player);
 
         for (int i = 1; i < difficulty + 1; i++) {
             enemys.add(new Player(game, i));
-            enemys.getLast().getTransform().setPosition(positions[i]);
+            enemys.getLast().getTransform().setPosition(positions.get(i));
 
             EnemyController enemy = new EnemyController(this, enemys.getLast());
             enemys.getLast().addComponent(enemy);
@@ -74,7 +74,11 @@ public class GameBridge {
     private void SaveGame() {
         if (game.keyboardInput.isKeyPressed(KeyEvent.VK_CONTROL) && game.keyboardInput.isKeyPressed(KeyEvent.VK_S)) {
 
-            Vector2[] playerPositions = new Vector2[]{player.getTransform().getPosition()};
+            List<Vector2> playerPositions = new ArrayList<>();
+            playerPositions.add(player.getTransform().getPosition());
+            for(Player enemy : enemys) {
+                playerPositions.add(enemy.getTransform().getPosition());
+            }
 
             levelGenerator.saveGame(playerPositions);
             System.out.println("Game saved!");

@@ -21,7 +21,7 @@ public class LevelGenerator {
         this.game = game;
     }
 
-    public void saveGame(Vector2[] playerPositions) {
+    public void saveGame(List<Vector2> playerPositions) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(SAVE_FILE_NAME))) {
             out.writeObject(playerPositions);
             out.writeObject(pathMap);
@@ -31,9 +31,9 @@ public class LevelGenerator {
         }
     }
 
-    public Vector2[] loadGame() {
+    public List<Vector2> loadGame() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(SAVE_FILE_NAME))) {
-            Vector2[] positions = (Vector2[]) in.readObject();
+            List<Vector2> positions = (List<Vector2>) in.readObject();
             boolean[][] savedPathMap = (boolean[][]) in.readObject();
 
             // Copy the loaded pathMap into the current pathMap
@@ -59,24 +59,24 @@ public class LevelGenerator {
         }
     }
 
-    public Vector2[] generateLevel(int enemyCount) {
-        Vector2[] positions;
+    public List<Vector2> generateLevel(int enemyCount) {
+        List<Vector2> positions;
 
         if (hasSaveGame()) {
             positions = loadGame();
         } else {
             generateRandomMap();
             filterNeighbours();
-            positions = new Vector2[enemyCount + 1];
+            positions = new ArrayList<>(enemyCount + 1);
             List<Vector2Int> occupiedGridPositions = new ArrayList<>();
 
             for (int i = 0; i < enemyCount + 1; i++) {
                 if (i == 0) {
-                    positions[0] = new Vector2(2 * TILE_SIZE, 2 * TILE_SIZE);
+                    positions.add(new Vector2(2 * TILE_SIZE, 2 * TILE_SIZE));
                 } else {
-                    Vector2Int spawnPoint = getSpawnPoint(positions[0], occupiedGridPositions);
+                    Vector2Int spawnPoint = getSpawnPoint(positions.get(0), occupiedGridPositions);
                     occupiedGridPositions.add(spawnPoint);
-                    positions[i] = spawnPoint.toVector2().multiply(TILE_SIZE);
+                    positions.add(tilePositionToWorldPosition(spawnPoint));
                 }
             }
         }
@@ -144,7 +144,7 @@ public class LevelGenerator {
     }
 
     public Vector2Int getSpawnPoint(Vector2 playerPosition, List<Vector2Int> occupiedGridPositions) {
-        Vector2Int playerGridPosition = playerPosition.getVector2Int().divide(TILE_SIZE);
+        Vector2Int playerGridPosition = worldPositionToTilePosition(playerPosition);
 
         System.out.println("Player grid position -> " + playerGridPosition.toString());
 
@@ -168,10 +168,21 @@ public class LevelGenerator {
             if (spawnPoint == playerGridPosition) continue; //on player pos
             if (!pathMap[spawnPoint.x][spawnPoint.y]) continue; //non walkable
             if (playerGridPosition.distanceTo(spawnPoint) < spawnRange) continue; //too close
-            if (!occupiedGridPositions.isEmpty() && occupiedGridPositions.contains(spawnPoint)) continue; //already occupied by other enemy
+            if (!occupiedGridPositions.isEmpty() && occupiedGridPositions.contains(spawnPoint))
+                continue; //already occupied by other enemy
 
             System.out.println("Spawning to " + spawnPoint.toString());
             return spawnPoint;
         }
+    }
+
+    public Vector2Int worldPositionToTilePosition(Vector2 position) {
+        return position.getVector2Int().divide(TILE_SIZE);
+    }
+
+    public Vector2 tilePositionToWorldPosition(Vector2Int position) {
+        Vector2 worldPos = position.toVector2().multiply(TILE_SIZE);
+        worldPos = worldPos.add(new Vector2(TILE_SIZE / 2f, TILE_SIZE / 2f));
+        return worldPos;
     }
 }
