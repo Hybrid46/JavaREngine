@@ -37,11 +37,11 @@ public class GameBridge {
         player.getTransform().setPosition(positions[0]);
         game.getCameraManager().setFollowEntity(player);
 
-        for (int i = 0; i < difficulty; i++) {
-            enemys.add(new Player(game, i + 1));
-            enemys.getLast().getTransform().setPosition(positions[i + 1]);
+        for (int i = 1; i < difficulty + 1; i++) {
+            enemys.add(new Player(game, i));
+            enemys.getLast().getTransform().setPosition(positions[i]);
 
-            EnemyController enemy = new EnemyController(this);
+            EnemyController enemy = new EnemyController(this, enemys.getLast());
             enemys.getLast().addComponent(enemy);
         }
 
@@ -49,7 +49,29 @@ public class GameBridge {
     }
 
     public void updateGame() {
-        //savegame hotkey
+        SaveGame();
+        DeleteSaveGame();
+        DestroyEntitys();
+    }
+
+    private void DestroyEntitys() {
+        if (player != null && player.markedToDestroy()) {
+            player = null;
+            System.out.println("---Game over!---");
+            //TODO game over
+        }
+
+        enemys.removeIf(Entity::markedToDestroy);
+    }
+
+    private void DeleteSaveGame() {
+        if (game.keyboardInput.isKeyPressed(KeyEvent.VK_CONTROL) && game.keyboardInput.isKeyPressed(KeyEvent.VK_D)) {
+            levelGenerator.deleteSaveGame();
+            System.out.println("Save file removed!");
+        }
+    }
+
+    private void SaveGame() {
         if (game.keyboardInput.isKeyPressed(KeyEvent.VK_CONTROL) && game.keyboardInput.isKeyPressed(KeyEvent.VK_S)) {
 
             Vector2[] playerPositions = new Vector2[]{player.getTransform().getPosition()};
@@ -57,22 +79,6 @@ public class GameBridge {
             levelGenerator.saveGame(playerPositions);
             System.out.println("Game saved!");
         }
-
-        //delete save game hotkey
-        if (game.keyboardInput.isKeyPressed(KeyEvent.VK_CONTROL) && game.keyboardInput.isKeyPressed(KeyEvent.VK_D)) {
-            levelGenerator.deleteSaveGame();
-            System.out.println("Save file removed!");
-        }
-
-        if (player != null && player.markedToDestroy()) {
-            player = null;
-            System.out.println("Game over!");
-            //TODO game over
-        }
-
-        enemys.removeIf(Entity::markedToDestroy);
-
-        //TODO Update enemy controller components
     }
 
     public void windowFocusGained() {
