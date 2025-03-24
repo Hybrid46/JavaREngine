@@ -12,7 +12,7 @@ public class Player extends Entity implements Updatable {
 
     private final float playerSpeed = 1.0f;
     private final float playerRotationSpeed = 0.5f;
-    private boolean moving = false, attacking = false;
+    private boolean moving = false, attacking = false, turning = false;
     private boolean left, up, right, down;
     private Turret turret;
 
@@ -52,28 +52,33 @@ public class Player extends Entity implements Updatable {
         transform.setPosition(positionAndVelocity);
         transform.addRotation(updatePos().x);
 
-        up = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_W));
-        down = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_S));
-        left = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_A));
-        right = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_D));
+        if (super.getOwner() == 0) {
+            up = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_W));
+            down = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_S));
+            left = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_A));
+            right = (getGame().keyboardInput.isKeyPressed(KeyEvent.VK_D));
 
-        if (getGame().mouseInput.isButtonPressed(MouseEvent.BUTTON1)) {
-            System.out.println("Player, button 1 pressed");
-            setAttacking(true);
-            doAttack();
+            if (getGame().mouseInput.isButtonPressed(MouseEvent.BUTTON1)) {
+                //System.out.println("Player, button 1 pressed");
+                setAttacking(true);
+            }
+
+            if (getGame().mouseInput.isButtonPressed(MouseEvent.BUTTON2)) {
+                //System.out.println("Player, button 2 pressed");
+            }
+
+            if (getGame().mouseInput.isButtonPressed(MouseEvent.BUTTON3)) {
+                //System.out.println("Player, button 3 pressed");
+            }
         }
 
-        if (getGame().mouseInput.isButtonPressed(MouseEvent.BUTTON2)) {
-            System.out.println("Player, button 2 pressed");
-        }
-
-        if (getGame().mouseInput.isButtonPressed(MouseEvent.BUTTON3)) {
-            System.out.println("Player, button 3 pressed");
-        }
+        if (attacking) doAttack();
     }
 
     private Vector2 updatePos() {
-        moving = false;
+        if (moving) moving = false;
+        if (turning) turning = false;
+
         if (!left && !right && !up && !down) {
             return new Vector2();
         }
@@ -82,14 +87,18 @@ public class Player extends Entity implements Updatable {
 
         if (left && !right) {
             xSpeed = -playerRotationSpeed;
+            turning = true;
         } else if (right && !left) {
             xSpeed = playerRotationSpeed;
+            turning = true;
         }
 
         if (up && !down) {
             ySpeed = -playerSpeed;
+            moving = true;
         } else if (down && !up) {
             ySpeed = playerSpeed;
+            moving = true;
         }
 
         return new Vector2(xSpeed, ySpeed);

@@ -1,6 +1,8 @@
 package com.hybrid.tankGame;
 
-import com.hybrid.rEngine.components.*;
+import com.hybrid.rEngine.components.Entity;
+import com.hybrid.rEngine.components.Renderer;
+import com.hybrid.rEngine.components.Updatable;
 import com.hybrid.rEngine.main.Game;
 import com.hybrid.rEngine.math.Vector2;
 
@@ -19,14 +21,14 @@ public class Turret extends Entity implements Updatable {
 
     @Override
     public void update() {
-        turnToMouse();
+        turnToDirection();
     }
 
-    private void turnToMouse() {
-        Vector2 mousePosition = getGame().mouseInput.getMousePosition();
+    private void turnToDirection() {
+        Vector2 targetScreenPosition = super.getOwner() == 0 ? getGame().mouseInput.getMousePosition() : getGame().getWindowSize().copy().divide(2f);
         Vector2 screenPosition = getGame().getCameraManager().getCamera().worldToScreen(getTransform().getPosition());
-        Vector2 directionToMouse = mousePosition.subtract(screenPosition);
+        Vector2 direction = targetScreenPosition.subtract(screenPosition);
 
-        getTransform().turnToDirection(directionToMouse.normlaized(), turnSpeed);
+        getTransform().turnToDirection(direction.normlaized(), turnSpeed);
     }
 }

@@ -96,12 +96,13 @@ public class Game implements Runnable {
     public void render(Graphics2D g2d) {
         layeredRenderUpdatables.clear();
         layeredRenderUpdatablesSize = 0;
-        float drawRange = Math.max(gameWindow.getWindowSize().x,gameWindow.getWindowSize().y) * 0.6f;
+        float drawRange = Math.max(gameWindow.getWindowSize().x, gameWindow.getWindowSize().y) * 0.6f;
 
         for (RenderUpdatable renderUpdatable : renderUpdatables) {
             //TODO
             //if (!cameraManager.getBoundingBox().contains(((Renderer)renderUpdatable).getBoundTransform().getPosition().toPoint())) continue;
-            if (cameraManager.getFollowEntity().getTransform().getPosition().distanceTo(((Renderer)renderUpdatable).getBoundTransform().getPosition()) > drawRange) continue;
+            if (cameraManager.getFollowEntity().getTransform().getPosition().distanceTo(((Renderer) renderUpdatable).getBoundTransform().getPosition()) > drawRange)
+                continue;
 
             int renderUpdatableLayer = renderUpdatable.getLayer();
 
@@ -110,7 +111,7 @@ public class Game implements Runnable {
             }
 
             layeredRenderUpdatables.get(renderUpdatableLayer).add(renderUpdatable);
-            layeredRenderUpdatablesSize ++;
+            layeredRenderUpdatablesSize++;
         }
 
         for (int layer : layeredRenderUpdatables.keySet()) {
@@ -198,11 +199,11 @@ public class Game implements Runnable {
     }
 
     public void windowFocusLost() {
-        gameBridge.windowFocusLost();
+        if (gameBridge != null) gameBridge.windowFocusLost();
     }
 
     public void windowFocusGained() {
-        gameBridge.windowFocusGained();
+        if (gameBridge != null) gameBridge.windowFocusGained();
     }
 
     public void registerEntity(Entity entity) {
@@ -218,6 +219,7 @@ public class Game implements Runnable {
     }
 
     public Vector2 getWindowSize() {
+        if (gameWindow == null) return null;
         return gameWindow.getWindowSize();
     }
 }

@@ -144,6 +144,10 @@ public class Vector2 implements Serializable {
         return (float) Math.toDegrees(Math.acos(cosine));
     }
 
+    public Vector2 copy(){
+        return new Vector2(this.x, this.y);
+    }
+
     public Point toPoint() {
         return new Point((int) x, (int) y);
     }

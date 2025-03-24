@@ -185,4 +185,22 @@ public class LevelGenerator {
         worldPos = worldPos.add(new Vector2(TILE_SIZE / 2f, TILE_SIZE / 2f));
         return worldPos;
     }
+
+    public Vector2Int getRandomTile() {
+        while (true) {
+            int x = (int) Math.round(Math.random() * MAP_SIZE);
+            int y = (int) Math.round(Math.random() * MAP_SIZE);
+            x = Math.max(1, x);
+            y = Math.max(1, y);
+            x = Math.min(MAP_SIZE - 1, x);
+            y = Math.min(MAP_SIZE - 1, y);
+
+            Vector2Int randomTile = new Vector2Int(x, y);
+
+            if (!pathMap[randomTile.x][randomTile.y]) continue; //non walkable
+
+            //System.out.println("Random tile position " + randomTile.toString());
+            return randomTile;
+        }
+    }
 }
