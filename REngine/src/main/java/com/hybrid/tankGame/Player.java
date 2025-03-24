@@ -97,7 +97,7 @@ public class Player extends Entity implements Updatable {
 
     public void doAttack() {
         //System.out.println("Attack!");
-        if (turret != null) {
+        if (!turret.markedToDestroy() && turret != null) {
             new Bullet(turret);
         }
         attacking = false;

@@ -42,7 +42,7 @@ public class Bullet extends Entity implements Updatable {
                 Entity otherEntity = ((RectCollider) other).getParentEntity();
                 if (getOwner() == otherEntity.getOwner()) continue; //skip self damage
                 if (!otherEntity.isStatic()) otherEntity.Destroy();
-                Destroy();
+                this.Destroy();
             }
 
             //other collider types...

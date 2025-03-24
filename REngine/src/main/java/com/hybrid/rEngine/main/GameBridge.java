@@ -1,11 +1,14 @@
 package com.hybrid.rEngine.main;
 
+import com.hybrid.rEngine.components.Entity;
 import com.hybrid.rEngine.math.Vector2;
 import com.hybrid.tankGame.EnemyController;
 import com.hybrid.tankGame.LevelGenerator;
 import com.hybrid.tankGame.Player;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 //Special class to make a bridge between the Engine and Game
 //Parent class for all Game variable and handles all the logic
@@ -14,7 +17,7 @@ public class GameBridge {
     private int difficulty = 5;
     private Game game;
     private Player player;
-    private Player[] enemys = new Player[difficulty];
+    private List<Player> enemys = new ArrayList<>();
     private LevelGenerator levelGenerator;
 
     private GameBridge() {
@@ -35,11 +38,11 @@ public class GameBridge {
         game.getCameraManager().setFollowEntity(player);
 
         for (int i = 0; i < difficulty; i++) {
-            enemys[i] = new Player(game, i + 1);
-            enemys[i].getTransform().setPosition(positions[i + 1]);
+            enemys.add(new Player(game, i + 1));
+            enemys.getLast().getTransform().setPosition(positions[i + 1]);
 
             EnemyController enemy = new EnemyController(this);
-            enemys[i].addComponent(enemy);
+            enemys.getLast().addComponent(enemy);
         }
 
         System.out.println("Game started...");
@@ -60,6 +63,14 @@ public class GameBridge {
             levelGenerator.deleteSaveGame();
             System.out.println("Save file removed!");
         }
+
+        if (player != null && player.markedToDestroy()) {
+            player = null;
+            System.out.println("Game over!");
+            //TODO game over
+        }
+
+        enemys.removeIf(Entity::markedToDestroy);
 
         //TODO Update enemy controller components
     }
@@ -82,7 +93,7 @@ public class GameBridge {
 
     public Player getPlayer(int index) {
         if (index == 0) return player;
-        if (index > 0 && index <= enemys.length) return enemys[index - 1];
+        if (index > 0 && index <= enemys.size()) return enemys.get(index -1);
         return null;
     }
 }

@@ -14,6 +14,7 @@ public class Entity {
     private final Transform my_transform;
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
     private boolean isStatic = false;
+    private boolean destroy = false;
 
     public Entity(Game game, int owner) {
         this.game = game;
@@ -121,6 +122,10 @@ public class Entity {
         return owner;
     }
 
+    public boolean markedToDestroy(){
+        return destroy;
+    }
+
     public void Destroy() {
 //        System.out.println("Destroying" + this.getUpdatables().size() + "Updatables");
 //        System.out.println("Destroying" + this.getRenderUpdatables().size() + "RenderUpdatables");
@@ -133,5 +138,7 @@ public class Entity {
             game.unregisterRenderUpdatable(upd);
         }
         game.unregisterEntity(this);
+
+        destroy = true;
     }
 }
