@@ -38,11 +38,12 @@ public class GameBridge {
         game.getCameraManager().setFollowEntity(player);
 
         for (int i = 1; i < difficulty + 1; i++) {
-            enemys.add(new Player(game, i));
-            enemys.getLast().getTransform().setPosition(positions.get(i));
+            Player newEnemy = new Player(game, i);
+            enemys.add(newEnemy);
+            newEnemy.getTransform().setPosition(positions.get(i));
 
-            EnemyController enemy = new EnemyController(this, enemys.getLast());
-            enemys.getLast().addComponent(enemy);
+            EnemyController enemy = new EnemyController(this, newEnemy);
+            newEnemy.addComponent(enemy);
         }
 
         System.out.println("Game started...");
