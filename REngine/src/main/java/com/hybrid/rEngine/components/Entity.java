@@ -26,6 +26,11 @@ public class Entity {
 
     //Handle components by type
     public <T extends Component> T removeComponent(Class<T> componentType) {
+        if (destroy) {
+            System.err.println("Cannot remove component from destroyed entity!");
+            return null;
+        }
+
         if (!hasComponent(componentType)) {
             return null;
         }
@@ -60,6 +65,16 @@ public class Entity {
         if (component == null) {
             System.err.println("Component is null!");
             return;
+        }
+
+        if (destroy) {
+            System.err.println("Cannot add component to destroyed entity!");
+            return;
+        }
+
+        Component existing = components.get(component.getClass());
+        if (existing != null) {
+            removeComponent(existing.getClass());
         }
 
         if (component instanceof Updatable updatable) {
@@ -137,6 +152,7 @@ public class Entity {
         for(RenderUpdatable upd : this.getRenderUpdatables()) {
             game.unregisterRenderUpdatable(upd);
         }
+
         game.unregisterEntity(this);
 
         destroy = true;

@@ -29,6 +29,7 @@ public class EnemyController extends Component implements Updatable {
     private void movement() {
         Vector2Int currentTilePosition = levelGenerator.worldPositionToTilePosition(controlledPlayer.getTransform().getPosition().copy());
         Vector2Int targetPosition = levelGenerator.getRandomTile();
+        //TODO movement
     }
 
     private void attack() {
