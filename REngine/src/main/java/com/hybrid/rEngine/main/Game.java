@@ -101,8 +101,12 @@ public class Game implements Runnable {
         for (RenderUpdatable renderUpdatable : renderUpdatables) {
             //TODO
             //if (!cameraManager.getBoundingBox().contains(((Renderer)renderUpdatable).getBoundTransform().getPosition().toPoint())) continue;
-            if (cameraManager.getFollowEntity().getTransform().getPosition().distanceTo(((Renderer) renderUpdatable).getBoundTransform().getPosition()) > drawRange)
-                continue;
+            Entity followEntity = cameraManager.getFollowEntity();
+            if (followEntity != null) {
+                Vector2 followPos = followEntity.getTransform().getPosition();
+                Vector2 rendererPos = ((Renderer) renderUpdatable).getBoundTransform().getPosition();
+                if (followPos.distanceTo(rendererPos) > drawRange) continue;
+            }
 
             int renderUpdatableLayer = renderUpdatable.getLayer();
 
