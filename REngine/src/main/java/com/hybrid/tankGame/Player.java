@@ -37,9 +37,6 @@ public class Player extends Entity implements Updatable {
         Parent parent = new Parent(getTransform());
         parent.addChild(turret.getTransform());
         addComponent(parent);
-
-        game.registerUpdatable(parent);
-        game.registerUpdatable(this);
     }
 
     public void update() {

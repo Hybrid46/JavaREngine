@@ -27,8 +27,6 @@ public class Bullet extends Entity implements Updatable {
 
         RectCollider rectCollider = new RectCollider(transform, new Vector2Int(4, 4));
         addComponent(rectCollider);
-
-        getGame().registerUpdatable(this);
     }
 
     @Override

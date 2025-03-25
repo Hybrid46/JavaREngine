@@ -37,13 +37,6 @@ public class Entity {
 
         T component = componentType.cast(components.remove(componentType));
 
-        if (component instanceof Updatable updatable) {
-            game.unregisterUpdatable(updatable);
-        }
-        if (component instanceof RenderUpdatable renderUpdatable) {
-            game.unregisterRenderUpdatable(renderUpdatable);
-        }
-
         return component;
     }
 
@@ -77,15 +70,6 @@ public class Entity {
             removeComponent(existing.getClass());
         }
 
-        if (component instanceof Updatable updatable) {
-            game.registerUpdatable(updatable);
-            //System.out.println("Registered as Updatable: " + component.getClass().getSimpleName());
-        }
-        if (component instanceof RenderUpdatable renderUpdatable) {
-            game.registerRenderUpdatable(renderUpdatable);
-            //System.out.println("Registered as RenderUpdatable: " + component.getClass().getSimpleName());
-        }
-
         components.put(component.getClass(), component);
     }
 
@@ -105,23 +89,47 @@ public class Entity {
         this.isStatic = isStatic;
     }
 
-    public List<Updatable> getUpdatables() {
-        List<Updatable> updatables = new ArrayList<>();
-        for (Component component : components.values()) {
-            if (component instanceof Updatable updatable) {
+    public ArrayList<Updatable> getUpdatables() {
+        ArrayList<Updatable> updatables = new ArrayList<>();
+
+        if (this instanceof Updatable updatable) {
+            updatables.add(updatable);
+        }
+
+        for (Map.Entry<Class<? extends Component>, Component> entry : components.entrySet()) {
+            Class<? extends Component> componentClass = entry.getKey();
+            Component componentInstance = entry.getValue();
+
+            if (componentInstance instanceof Updatable updatable) {
                 updatables.add(updatable);
             }
+
+            //System.out.println("Class: " + componentClass.getName());
+            //System.out.println("Component: " + componentInstance);
         }
+
         return updatables;
     }
 
-    public List<RenderUpdatable> getRenderUpdatables() {
-        List<RenderUpdatable> renderUpdatables = new ArrayList<>();
-        for (Component component : components.values()) {
-            if (component instanceof RenderUpdatable renderUpdatable) {
+    public ArrayList<RenderUpdatable> getRenderUpdatables() {
+        ArrayList<RenderUpdatable> renderUpdatables = new ArrayList<>();
+
+        if (this instanceof RenderUpdatable renderUpdatable) {
+            renderUpdatables.add(renderUpdatable);
+        }
+
+        for (Map.Entry<Class<? extends Component>, Component> entry : components.entrySet()) {
+            Class<? extends Component> componentClass = entry.getKey();
+            Component componentInstance = entry.getValue();
+
+            if (componentInstance instanceof RenderUpdatable renderUpdatable) {
                 renderUpdatables.add(renderUpdatable);
             }
+
+            //System.out.println("Class: " + componentClass.getName());
+            //System.out.println("Component: " + componentInstance);
         }
+
         return renderUpdatables;
     }
 
@@ -142,19 +150,7 @@ public class Entity {
     }
 
     public void Destroy() {
-//        System.out.println("Destroying" + this.getUpdatables().size() + "Updatables");
-//        System.out.println("Destroying" + this.getRenderUpdatables().size() + "RenderUpdatables");
-//        System.out.println("Destroying" + this.getClass().getSimpleName() + "Entity");
-
-        for(Updatable upd : this.getUpdatables()) {
-            game.unregisterUpdatable(upd);
-        }
-        for(RenderUpdatable upd : this.getRenderUpdatables()) {
-            game.unregisterRenderUpdatable(upd);
-        }
-
         game.unregisterEntity(this);
-
         destroy = true;
     }
 }

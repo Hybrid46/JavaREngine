@@ -28,8 +28,6 @@ public class CameraManager extends Entity implements Updatable {
         screenCenter = screenCenter.round();
         getTransform().setPosition(screenCenter);
         boundingBox = new Rectangle(drawRange.x, drawRange.y);
-
-        game.registerUpdatable(this);
     }
 
     @Override

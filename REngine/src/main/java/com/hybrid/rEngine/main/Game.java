@@ -9,7 +9,6 @@ import com.hybrid.rEngine.utils.ScreenUtils;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Stack;
 import java.util.TreeMap;
 
 public class Game implements Runnable {
@@ -20,17 +19,13 @@ public class Game implements Runnable {
     private final GamePanel gamePanel;
     private final int FPS_SET = ScreenUtils.getRefreshRate(0);
     private final int UPS_SET = 200;
-    private final HashSet<Updatable> updatables = new HashSet<>();
-    private final HashSet<RenderUpdatable> renderUpdatables = new HashSet<>();
+    private final ArrayList<Updatable> updatables = new ArrayList<>();
+    private final ArrayList<RenderUpdatable> renderUpdatables = new ArrayList<>();
     private final TreeMap<Integer, ArrayList<RenderUpdatable>> layeredRenderUpdatables = new TreeMap<>();
     private final ArrayList<Collider> colliders = new ArrayList<>();
     private final HashSet<Entity> entities = new HashSet<>();
     private final CameraManager cameraManager;
     private final GameBridge gameBridge;
-    private final Stack<Updatable> addUpdatables = new Stack<>();
-    private final Stack<RenderUpdatable> addRenderUpdatables = new Stack<>();
-    private final Stack<Updatable> removeUpdatables = new Stack<>();
-    private final Stack<RenderUpdatable> removeRenderUpdatables = new Stack<>();
     private Thread gameThread;
     private int layeredRenderUpdatablesSize = 0;
 
@@ -56,11 +51,11 @@ public class Game implements Runnable {
 
     private void update() {
 
-        while (!addUpdatables.isEmpty()) updatables.add(addUpdatables.pop());
-        while (!removeUpdatables.isEmpty()) updatables.remove(removeUpdatables.pop());
+        updatables.clear();
 
-        while (!addRenderUpdatables.isEmpty()) renderUpdatables.add(addRenderUpdatables.pop());
-        while (!removeRenderUpdatables.isEmpty()) renderUpdatables.remove(removeRenderUpdatables.pop());
+        for (Entity entity : entities) {
+            updatables.addAll(entity.getUpdatables());
+        }
 
         for (Updatable updatable : updatables) {
             updatable.update();
@@ -94,6 +89,13 @@ public class Game implements Runnable {
     }
 
     public void render(Graphics2D g2d) {
+
+        renderUpdatables.clear();
+
+        for (Entity entity : entities) {
+            renderUpdatables.addAll(entity.getRenderUpdatables());
+        }
+
         layeredRenderUpdatables.clear();
         layeredRenderUpdatablesSize = 0;
         float drawRange = Math.max(gameWindow.getWindowSize().x, gameWindow.getWindowSize().y) * 0.6f;
@@ -101,6 +103,7 @@ public class Game implements Runnable {
         for (RenderUpdatable renderUpdatable : renderUpdatables) {
             //TODO
             //if (!cameraManager.getBoundingBox().contains(((Renderer)renderUpdatable).getBoundTransform().getPosition().toPoint())) continue;
+
             Entity followEntity = cameraManager.getFollowEntity();
             if (followEntity != null) {
                 Vector2 followPos = followEntity.getTransform().getPosition();
@@ -184,22 +187,6 @@ public class Game implements Runnable {
                 updates = 0;
             }
         }
-    }
-
-    public void registerUpdatable(Updatable updatable) {
-        addUpdatables.add(updatable);
-    }
-
-    public void unregisterUpdatable(Updatable updatable) {
-        removeUpdatables.add(updatable);
-    }
-
-    public void registerRenderUpdatable(RenderUpdatable updatable) {
-        addRenderUpdatables.add(updatable);
-    }
-
-    public void unregisterRenderUpdatable(RenderUpdatable updatable) {
-        removeRenderUpdatables.add(updatable);
     }
 
     public void windowFocusLost() {
