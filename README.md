@@ -2,7 +2,7 @@
 
 **R Engine** is a lightweight, component-based 2D game engine built in Java, designed for simplicity and flexibility. Developed by Hybrid, this engine provides essential tools and components to create 2D games with ease, featuring entity-component architecture, rendering, animation, collision detection, and input handling.
 
-![Engine Architecture]((Workflow.png))
+![Engine Architecture](Workflow.png)
 ---
 
 ## Features
@@ -104,16 +104,17 @@ if (game.keyboardInput.isKeyPressed(KeyEvent.VK_SPACE)) {
 Vector2 mousePos = game.mouseInput.getMousePosition();
 ```
 
-```mermaid
+```
 Component Documentation
 Key Classes
-Class	Description
-Entity	Base game object container
-Component	Base class for all components
-Transform	Position/Rotation/Scale management
-Renderer	Sprite rendering component
-Camera	View/projection matrix management
-Game Loop Structure
+
+Class	        Description
+Entity	        Base game object container
+Component	    Base class for all components
+Transform	    Position/Rotation/Scale management
+Renderer	    Sprite rendering component
+Camera	        View/projection matrix management
+Game            Loop Structure
 ```
 
 Example Project Structure
