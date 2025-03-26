@@ -1,88 +1,63 @@
-![Workflow](Workflow.png)
+# R Engine - Java Game Engine
 
-R Engine - Java Game Engine
+**R Engine** is a lightweight, component-based 2D game engine built in Java, designed for simplicity and flexibility. Developed by Hybrid, this engine provides essential tools and components to create 2D games with ease, featuring entity-component architecture, rendering, animation, collision detection, and input handling.
 
-R Engine is a lightweight, component-based 2D game engine built in Java, designed for simplicity and flexibility. Developed by Hybrid, this engine provides essential tools and components to create 2D games with ease, featuring entity-component architecture, rendering, animation, collision detection, and input handling.
+![Engine Architecture](https://via.placeholder.com/800x400?text=R+Engine+Demo)  
+*(Example screenshot placeholder)*
 
-Engine Architecture
-(Example screenshot placeholder)
-Features
-Core Architecture
+---
 
-    Entity-Component-System (ECS): Flexible architecture for game object composition.
+## Features
 
-    Game Loop: Optimized loop with configurable FPS/UPS settings.
+### Core Architecture
+- **Entity-Component-System (ECS)**: Flexible architecture for game object composition
+- **Game Loop**: Optimized loop with configurable FPS/UPS settings
+- **Camera System**:
+  - World-to-screen coordinate transformations
+  - Zoom/rotation controls
+  - Entity following functionality
 
-    Camera System:
+### Rendering
+- **Layered Rendering**: Z-index based rendering with `RenderUpdatable` interface
+- **Sprite Animation**: `Animator` component for sprite sheet animations
+- **Dynamic Transformations**: Rotation, scaling, and translation of entities
 
-        World-to-screen coordinate transformations
+### Components
+- **Transform**: Position, rotation, scale, and velocity management
+- **Renderer**: Sprite rendering with bounding boxes
+- **Colliders**:
+  - `RectCollider` for AABB collisions
+  - Collision resolution system
+- **Parent-Child Hierarchy**: `Parent` component for transform inheritance
 
-        Zoom/rotation controls
+### Input Handling
+- **Keyboard & Mouse Support**: Event-driven input system
+- **Double-Click Detection**
+- **Input State Tracking**: Pressed/released/held states
 
-        Entity following functionality
+### Physics
+- **Collision Detection**: Broad-phase and narrow-phase checks
+- **Collision Resolution**: Impulse-based response system
 
-Rendering
+### Utilities
+- **Math Library**:
+  - `Vector2/Vector2Int` for 2D math
+  - `Matrix3x3` for transformations
+- **Resource Management**: `ResourceLoader` for sprite loading
+- **Screen Utilities**: Multi-monitor support and resolution handling
 
-    Layered Rendering: Z-index based rendering with RenderUpdatable interface
+---
 
-    Sprite Animation: Animator component for sprite sheet animations
+## Getting Started
 
-    Dynamic Transformations: Rotation, scaling, and translation of entities
+### Prerequisites
+- Java JDK 17+
+- Maven
 
-Components
-
-    Transform: Position, rotation, scale, and velocity management
-
-    Renderer: Sprite rendering with bounding boxes
-
-    Colliders:
-
-        RectCollider for AABB collisions
-
-        Collision resolution system
-
-    Parent-Child Hierarchy: Parent component for transform inheritance
-
-Input Handling
-
-    Keyboard & Mouse Support: Event-driven input system
-
-    Double-Click Detection
-
-    Input State Tracking: Pressed/released/held states
-
-Physics
-
-    Collision Detection: Broad-phase and narrow-phase checks
-
-    Collision Resolution: Impulse-based response system
-
-Utilities
-
-    Math Library:
-
-        Vector2/Vector2Int for 2D math
-
-        Matrix3x3 for transformations
-
-    Resource Management: ResourceLoader for sprite loading
-
-    Screen Utilities: Multi-monitor support and resolution handling
-
-Getting Started
-Prerequisites
-
-    Java JDK 17+
-
-    Maven
-
-Installation
-
-    Clone the repository:
-    bash
-    Copy
-
-    git clone https://github.com/Hybrid/JavaREngine.git
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Hybrid/JavaREngine.git
 
     Import into your IDE as a Maven project
 
