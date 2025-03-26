@@ -2,9 +2,7 @@
 
 **R Engine** is a lightweight, component-based 2D game engine built in Java, designed for simplicity and flexibility. Developed by Hybrid, this engine provides essential tools and components to create 2D games with ease, featuring entity-component architecture, rendering, animation, collision detection, and input handling.
 
-![Engine Architecture](https://via.placeholder.com/800x400?text=R+Engine+Demo)  
-*(Example screenshot placeholder)*
-
+![Engine Architecture]((Workflow.png))
 ---
 
 ## Features
@@ -58,14 +56,13 @@
 1. Clone the repository:
    ```bash
    git clone https://github.com/Hybrid/JavaREngine.git
+   ```
 
     Import into your IDE as a Maven project
 
 Usage
 Basic Entity Creation
-java
-Copy
-
+```java
 // Create a new entity
 Entity player = new Entity(game, 0);
 
@@ -78,11 +75,10 @@ player.addComponent(renderer);
 
 RectCollider collider = new RectCollider(transform, new Vector2Int(32, 32));
 player.addComponent(collider);
+```
 
 Animation System
-java
-Copy
-
+```java
 Animator animator = new Animator(
     transform, 
     renderer, 
@@ -90,26 +86,25 @@ Animator animator = new Animator(
     6
 );
 player.addComponent(animator);
+```
 
 Camera Control
-java
-Copy
-
+```java
 CameraManager camera = game.getCameraManager();
 camera.setFollowEntity(player);
-camera.setZoom(1.5f);
+```
 
 Input Handling
-java
-Copy
-
+```java
 // In update loop
 if (game.keyboardInput.isKeyPressed(KeyEvent.VK_SPACE)) {
     // Jump logic
 }
 
 Vector2 mousePos = game.mouseInput.getMousePosition();
+```
 
+```mermaid
 Component Documentation
 Key Classes
 Class	Description
@@ -119,16 +114,27 @@ Transform	Position/Rotation/Scale management
 Renderer	Sprite rendering component
 Camera	View/projection matrix management
 Game Loop Structure
-mermaid
-Copy
+```
 
-graph TD
+Example Project Structure
+```
+/src/main/java/
+├── com/hybrid/rEngine/
+│   ├── components/      # Core engine components
+│   ├── math/            # Math utilities
+│   ├── main/            # Game loop and managers
+│   └── utils/           # Helper classes
+└── com/hybrid/tankGame/ # Example game implementation
+```
+
+```
     A[Game Start] --> B[Initialize Entities]
     B --> C[Process Input]
     C --> D[Update Components]
     D --> E[Resolve Collisions]
     E --> F[Render Frame]
     F --> C
+```
 
 Examples
 Tank Game Implementation
@@ -154,28 +160,21 @@ Key implementation files:
 Development Roadmap
 Planned Features
 
-    Scene editor tools
+    - Editor
 
-    Particle system
+    - Particle system
 
-    Audio system
+    - Audio system
 
-    Network component
+    - Network component
 
-    Improved collision detection (SAT)
+    - Improved collision detection (SAT)
 
 Contributing
 
-Contributions are welcome! Please follow these steps:
-
-    Fork the repository
-
-    Create a feature branch
-
-    Submit a pull request
+Contributions are welcome!
 
 License
-
 This project is licensed under the MIT License - see LICENSE for details.
 
 Created by Hybrid - Free for educational and commercial use.
